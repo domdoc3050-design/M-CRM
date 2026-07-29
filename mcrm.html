@@ -454,7 +454,7 @@ async function renderCompanies(){
   const nm=pv(T.Comp).title,code=cn(T.Comp,'client id','clientid','client no','client code');
   const debugCols=T.Comp.columns.map(c=>c.title).join(', ');
   app.innerHTML=`
-  <div class="card" style="background:#fff8e8;border:1px solid #f5d99a">
+  <div class="card" style="background:#e8f6ec;border:1px solid #a9dfb8">
     <b>Diagnostic</b> — columns the app currently sees on Companies: <code>${esc(debugCols)}</code><br>
     Resolved Client Code field: <code>${esc(code||'NOT FOUND')}</code>
   </div>
