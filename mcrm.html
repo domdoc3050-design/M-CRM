@@ -7,1086 +7,1033 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-  * { box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background:#f2f4f6; margin:0; color:#222; }
-  header { background:#1c1c1c; color:#fff; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
-  header h1 { font-size:18px; margin:0; }
-  header .status { font-size:12px; color:#f5a623; }
-  nav { display:flex; gap:8px; padding:12px 24px; background:#fff; flex-wrap:wrap; border-bottom:1px solid #ddd; }
-  nav button { background:#eee; border:none; padding:8px 14px; border-radius:5px; cursor:pointer; font-size:13px; }
-  nav button.active { background:#f5a623; color:#fff; }
-  main { padding:20px 24px; max-width:1200px; margin:0 auto; }
-  .card { background:#fff; border-radius:8px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
-  h2 { margin-top:0; font-size:18px; }
-  label { display:block; font-size:12px; font-weight:600; color:#555; margin:10px 0 4px; }
-  input, select, textarea { width:100%; padding:8px 10px; border:1px solid #ccc; border-radius:5px; font-size:14px; }
-  textarea { min-height:70px; }
-  button.primary { background:#f5a623; color:#fff; border:none; padding:10px 18px; border-radius:5px; cursor:pointer; font-size:14px; margin-top:12px; }
-  button.secondary { background:#444; color:#fff; border:none; padding:10px 18px; border-radius:5px; cursor:pointer; font-size:14px; margin-top:12px; margin-left:8px; }
-  button.small { padding:5px 10px; font-size:12px; border-radius:4px; border:none; cursor:pointer; background:#eee; }
-  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
-  th, td { text-align:left; padding:8px; border-bottom:1px solid #eee; }
-  th { background:#fafafa; font-weight:600; }
-  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
-  .warn { background:#fff3cd; border:1px solid #ffe08a; color:#856404; padding:10px; border-radius:6px; font-size:13px; margin-top:8px; }
-  .err { background:#fde2e1; border:1px solid #f5a5a1; color:#8a1f1f; padding:10px; border-radius:6px; font-size:13px; margin-top:8px; }
-  .ok { background:#e1f5e5; border:1px solid #a5e0b3; color:#1f6a2f; padding:10px; border-radius:6px; font-size:13px; margin-top:8px; }
-  .autocomplete-box { position:relative; }
-  .ac-list { position:absolute; z-index:20; background:#fff; border:1px solid #ccc; width:100%; max-height:200px; overflow-y:auto; border-radius:0 0 6px 6px; box-shadow:0 4px 10px rgba(0,0,0,.1); }
-  .ac-item { padding:8px 10px; cursor:pointer; font-size:13px; border-bottom:1px solid #f0f0f0; }
-  .ac-item:hover { background:#f5f5f5; }
-  .pill { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600; color:#fff; }
-  .loader { text-align:center; padding:40px; color:#888; }
-  .item-row { display:grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 40px; gap:8px; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px; }
-  .item-row.header-row { font-weight:600; color:#555; border-bottom:2px solid #ddd; }
-  .totals-box { display:flex; gap:20px; margin-top:14px; padding-top:14px; border-top:2px solid #eee; flex-wrap:wrap; }
-  .totals-box div { background:#fafafa; padding:10px 16px; border-radius:6px; min-width:120px; }
-  .totals-box .label { font-size:11px; color:#888; }
-  .totals-box .value { font-size:16px; font-weight:700; }
-  .dash-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:20px; }
-  .dash-card { background:#fff; border-left:4px solid #f5a623; border-radius:6px; padding:14px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
-  .dash-card .num { font-size:22px; font-weight:700; }
-  .dash-card .lab { font-size:11px; color:#888; text-transform:uppercase; }
-  .clickable { cursor:pointer; color:#1a73e8; }
+  *{box-sizing:border-box}
+  body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#eef1f4;margin:0;color:#1c1c1c}
+  header{background:#1c1c1c;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px;margin:0}
+  header .status{font-size:12px;color:#f5a623}
+  nav{display:flex;gap:6px;padding:10px 20px;background:#fff;flex-wrap:wrap;border-bottom:1px solid #dde1e5}
+  nav button{background:#eef1f4;border:none;padding:8px 14px;border-radius:5px;cursor:pointer;font-size:13px}
+  nav button.active{background:#f5a623;color:#fff;font-weight:600}
+  main{padding:18px 20px;max-width:1400px;margin:0 auto}
+  .card{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+  h2{margin:0 0 12px;font-size:17px}
+  h3{margin:16px 0 8px;font-size:14px;color:#555}
+  label{display:block;font-size:11px;font-weight:700;color:#666;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.3px}
+  input,select,textarea{width:100%;padding:8px 10px;border:1px solid #ccd2d8;border-radius:5px;font-size:14px;font-family:inherit;background:#fff}
+  textarea{min-height:60px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:#f5a623}
+  button.primary{background:#f5a623;color:#fff;border:none;padding:10px 18px;border-radius:5px;cursor:pointer;font-size:14px;font-weight:600}
+  button.dark{background:#333;color:#fff;border:none;padding:10px 18px;border-radius:5px;cursor:pointer;font-size:14px}
+  button.ghost{background:#eef1f4;color:#333;border:1px solid #ccd2d8;padding:9px 16px;border-radius:5px;cursor:pointer;font-size:13px}
+  button.sm{padding:5px 10px;font-size:12px;border-radius:4px;border:1px solid #ccd2d8;cursor:pointer;background:#fff}
+  button.danger{background:#c0392b;color:#fff;border:none;padding:5px 10px;font-size:12px;border-radius:4px;cursor:pointer}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px;border-bottom:1px solid #eef1f4;vertical-align:top}
+  th{background:#f7f9fa;font-weight:700;font-size:11px;text-transform:uppercase;color:#666;letter-spacing:.3px}
+  tr:hover td{background:#fcfdfe}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+  @media(max-width:850px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .warn{background:#fff8e1;border:1px solid #ffe08a;color:#7a5b00;padding:10px;border-radius:6px;font-size:13px;margin:8px 0}
+  .err{background:#fdecea;border:1px solid #f5b5b0;color:#8a1f1f;padding:10px;border-radius:6px;font-size:13px;margin:8px 0}
+  .ok{background:#e8f6ec;border:1px solid #a9dfb8;color:#1c6b33;padding:10px;border-radius:6px;font-size:13px;margin:8px 0}
+  .loader{text-align:center;padding:36px;color:#8a9199}
+  .acbox{position:relative}
+  .aclist{position:absolute;z-index:40;background:#fff;border:1px solid #ccd2d8;width:100%;max-height:230px;overflow-y:auto;border-radius:0 0 6px 6px;box-shadow:0 6px 14px rgba(0,0,0,.12)}
+  .acitem{padding:8px 10px;cursor:pointer;font-size:13px;border-bottom:1px solid #f2f4f6}
+  .acitem:hover{background:#f7f9fa}
+  .clickrow{cursor:pointer}
+  .clickrow:hover td{background:#fff8e8}
+  .link{color:#1a73e8;cursor:pointer;text-decoration:none}
+  .link:hover{text-decoration:underline}
+  .pill{display:inline-block;padding:3px 9px;border-radius:11px;font-size:11px;font-weight:700}
+  .p-fresh{background:#e8f6ec;color:#1c6b33}
+  .p-mid{background:#fff8e1;color:#7a5b00}
+  .p-old{background:#fdecea;color:#8a1f1f}
+  .p-none{background:#eef1f4;color:#666}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .tile{background:#fff;border-radius:8px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.07);cursor:pointer;border-left:4px solid #f5a623}
+  .tile:hover{box-shadow:0 4px 12px rgba(0,0,0,.12)}
+  .tile h3{margin:0 0 6px;font-size:16px;color:#1c1c1c;text-transform:none;letter-spacing:0}
+  .tile p{margin:0;font-size:13px;color:#7a8189}
+  .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+  .kpi .box{background:#fff;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.07);border-left:4px solid #f5a623}
+  .kpi .num{font-size:21px;font-weight:800}
+  .kpi .lab{font-size:10px;color:#8a9199;text-transform:uppercase;font-weight:700;letter-spacing:.4px;margin-top:3px}
+  .itemgrid{width:100%;border-collapse:collapse;font-size:13px}
+  .itemgrid th{background:#f7f9fa;padding:7px 6px;font-size:10px}
+  .itemgrid td{padding:5px 6px;border-bottom:1px solid #eef1f4}
+  .itemgrid input,.itemgrid textarea{padding:6px 7px;font-size:13px;border:1px solid #dfe4e8}
+  .itemgrid textarea{min-height:70px;font-size:12px;line-height:1.45}
+  .totrow{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:2px solid #eef1f4}
+  .totrow .b{background:#f7f9fa;padding:9px 14px;border-radius:6px;min-width:118px}
+  .totrow .l{font-size:10px;color:#8a9199;text-transform:uppercase;font-weight:700}
+  .totrow .v{font-size:16px;font-weight:800;margin-top:2px}
+  .pos{color:#1c6b33}.neg{color:#8a1f1f}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:30px 16px;z-index:100;overflow-y:auto}
+  .modal .inner{background:#fff;border-radius:8px;padding:20px;max-width:760px;width:100%}
+  .muted{color:#8a9199;font-size:12px}
+  .rev-chip{display:inline-block;padding:5px 12px;border-radius:6px;background:#eef1f4;margin:3px 5px 3px 0;cursor:pointer;font-size:13px;border:1px solid #dfe4e8}
+  .rev-chip.cur{background:#f5a623;color:#fff;font-weight:700;border-color:#f5a623}
 </style>
 </head>
 <body>
 
 <header>
   <h1>⚙️ Moment Industry — RFQ CRM</h1>
-  <div class="status" id="connStatus">Connecting to database...</div>
+  <div class="status" id="connStatus">Connecting…</div>
 </header>
-
 <nav id="navBar"></nav>
-
-<main id="app">
-  <div class="loader">Loading schema from NocoDB...</div>
-</main>
+<main id="app"><div class="loader">Loading…</div></main>
 
 <script>
-/* ================= CONFIG ================= */
-const API_TOKEN = 'nc_pat_5sXWUdVTuM32JKFh1kSEWnY3KZqX51u6LWNyeUNu';
-const BASE_ID   = 'p9mkajpwjb1azuz';
-const API_BASE  = 'https://app.nocodb.com/api/v2';
+/* ============ CONFIG ============ */
+const API_TOKEN='nc_pat_5sXWUdVTuM32JKFh1kSEWnY3KZqX51u6LWNyeUNu';
+const BASE_ID='p9mkajpwjb1azuz';
+const API_BASE='https://app.nocodb.com/api/v2';
+const CLIENT_CODE_START=90;
 
-const COMPANY_INFO = {
-  name: 'MOMENT INDUSTRY',
-  address: 'Kırcaali Mah. 11 Bayır Sk. No:4/A Osmangazi / BURSA / TURKEY',
-  phone: '+90 224 250 93 53',
-  mobile: '+90 537 704 74 11',
-  email: 'export@momentindustry.com',
-  web: 'www.momentindustry.com'
+const CO={
+  name:'MOMENT INDUSTRY',
+  legal:'Moment Endustri Ekipmanlari Ith. Ve Ihr. San. Tic. Ltd. Sti.',
+  address:'Kircaali Mh. 11. Bayir Sk. No:4/A Osmangazi Bursa',
+  tel:'+90 224 250 93 53',
+  email:'export@momentindustry.com',
+  web:'www.momentindustry.com'
 };
 
-const TERMS_TEXT = `6. GENERAL TERMS AND CONDITIONS
-
-Delivery and Transfer of Risk:
-The delivery time specified herein refers to the time required to make the goods available at the Seller's premises, in accordance with the Ex-Works (EXW) Incoterms rule (or as specified in the Delivery Method section). The delivery time does not include transportation or shipping time.
-All costs, risks, and liabilities associated with the carriage of the goods shall transfer to the Buyer upon the goods being made ready for collection. Specifically, all shipping and insurance costs shall be borne by the Buyer, and the Buyer shall be solely responsible for any delays, losses, damages, or liabilities whatsoever that may occur during transport.
-
-Invoice Date:
-Products are invoiced upon delivery of the goods, and services are invoiced after the completion of the rendered service.
-
-Installation:
-The installation of the products, their dismantling from the installation site, commissioning, and supervision services are not included in our prices. Installation and other technical service fees are subject to a charge and will be quoted separately.
-
-Warranty:
-The warranty period for faults arising from manufacturing defects is twelve (12) months from the invoice date. Malfunctions resulting from incorrect product selection, improper installation and operating conditions, unsuitable storage, as well as consumables and measuring sensors, are excluded from the warranty.
-
-Penalties:
-A late payment interest of 4% per month is applied to overdue invoices, starting from the maturity date. Should the buyer unilaterally withdraw after the mutual contract is signed, a penalty invoice equal to 20% of the order amount will be issued, and any advance payment received will not be refunded. The Bursa Courts and Execution Offices are authorized for disputes arising from this contract.
-
-Change in Law in the Country of Execution:
-The Supplier's obligations and the agreed-upon pricing are based on all Laws (including statutes, regulations, decrees, and official governmental or judicial interpretations thereof, including, but not limited to, taxation and import/export regulations) in effect in the country where the Order works are executed as of the date of this Order.
-The Buyer shall promptly notify the Supplier of any actual or anticipated change, introduction, repeal, or modification to these Laws that occurs on or after the date of this Order.
-If any such legal change directly imposes an Additional Cost or causes a delay upon the Supplier in the performance of its duties, the Supplier shall be entitled to full relief. This relief shall take the form of the Completion Date being extended for the entire period of delay suffered, and the Contract Price being equitably adjusted to cover all substantiated Additional Costs incurred by the Supplier to fully comply with the Change in Law.
-
-Force Majeure:
-Neither party shall be liable for any failure or delay in performance caused by an event of Force Majeure, which is defined as any unforeseen event beyond that party's reasonable control that hinders or prevents performance. These events include, but are not limited to, Acts of God, war, hostilities, epidemics, government actions, and general labor strikes.
-The affected party must provide immediate written notice of the event, its expected duration, and its effect on performance, and must use all reasonable efforts to mitigate its impact. If the Force Majeure event persists for more than three (3) months, either party may terminate this Order upon written notice, and neither party shall incur any further liability, except for obligations accrued prior to termination.
-
-We trust that the above meets with your requirements and remain at your disposal for any technical clarification. We look forward to receiving your valued order.`;
-
-/* ================= API HELPERS ================= */
-async function ncFetch(path, opts={}) {
-  const res = await fetch(API_BASE + path, {
-    ...opts,
-    headers: {
-      'xc-token': API_TOKEN,
-      'Content-Type': 'application/json',
-      ...(opts.headers||{})
-    }
-  });
-  if (!res.ok) {
-    let txt = await res.text();
-    throw new Error(`API ${res.status}: ${txt.slice(0,300)}`);
-  }
-  const ct = res.headers.get('content-type')||'';
-  if (ct.includes('application/json')) return res.json();
-  return null;
-}
-
-async function listRecords(tableId, params={}) {
-  const p = new URLSearchParams(params);
-  return ncFetch(`/tables/${tableId}/records?${p.toString()}`);
-}
-async function createRecord(tableId, fields) {
-  return ncFetch(`/tables/${tableId}/records`, { method:'POST', body: JSON.stringify(fields) });
-}
-async function updateRecord(tableId, id, fields) {
-  return ncFetch(`/tables/${tableId}/records`, { method:'PATCH', body: JSON.stringify([{Id:id, ...fields}]) });
-}
-async function linkRecords(tableId, fieldId, recordId, relatedIds) {
-  const body = (Array.isArray(relatedIds)?relatedIds:[relatedIds]).map(id=>({Id:id}));
-  return ncFetch(`/tables/${tableId}/links/${fieldId}/records/${recordId}`, { method:'POST', body: JSON.stringify(body) });
-}
-async function listLinked(tableId, fieldId, recordId) {
-  try {
-    return await ncFetch(`/tables/${tableId}/links/${fieldId}/records/${recordId}?limit=1000`);
-  } catch(e) { return { list: [] }; }
-}
-
-/* ================= SCHEMA DISCOVERY ================= */
-let SCHEMA = {}; // title -> {id, title, columns:[...]}
-
-async function loadSchema() {
-  const tablesResp = await ncFetch(`/meta/bases/${BASE_ID}/tables`);
-  for (const t of tablesResp.list) {
-    const full = await ncFetch(`/meta/tables/${t.id}`);
-    SCHEMA[t.title] = full;
-  }
-}
-
-function getTable(name) {
-  const key = Object.keys(SCHEMA).find(k => k.toLowerCase().replace(/[^a-z0-9]/g,'') === name.toLowerCase().replace(/[^a-z0-9]/g,''));
-  if (!key) throw new Error(`Table not found: ${name}. Found tables: ${Object.keys(SCHEMA).join(', ')}`);
-  return SCHEMA[key];
-}
-function findCol(table, keywords) {
-  const kws = Array.isArray(keywords)?keywords:[keywords];
-  for (const kw of kws) {
-    const c = table.columns.find(c => c.title.toLowerCase().includes(kw.toLowerCase()));
-    if (c) return c;
-  }
-  return null;
-}
-function primaryCol(table) {
-  return table.columns.find(c => c.pv) || table.columns[0];
-}
-
-/* ================= APP STATE ================= */
-let T = {}; // resolved tables
-let VIEW = 'home';
-
-const app = document.getElementById('app');
-const navBar = document.getElementById('navBar');
-const connStatus = document.getElementById('connStatus');
-
-const NAV_ITEMS = [
-  {id:'home', label:'🏠 Home'},
-  {id:'search', label:'🔍 Search'},
-  {id:'companies', label:'🏢 Companies'},
-  {id:'newRfq', label:'➕ New RFQ'},
-  {id:'dashboard', label:'📊 Dashboard'},
-  {id:'suppliers', label:'🚚 Suppliers'},
-  {id:'products', label:'📦 Products'},
+const TERMS=[
+['Payment Terms:', null],
+['Delivery Method:','Our delivery is Ex-Works Istanbul or Bursa warehouses. Upon request, your order can be handed over to a cargo company for delivery to you, with shipping and insurance costs borne by you. The buyer is responsible for any delays, losses, damages, or liabilities that may occur during transport.'],
+['Delivery Time:','The delivery time specified herein refers to the time required to make the goods available at the Seller\u2019s premises, in accordance with the Ex-Works (EXW) Incoterms rule (or as specified in the Delivery Method section). The delivery time does not include transportation or shipping time.\nAll costs, risks, and liabilities associated with the carriage of the goods shall transfer to the Buyer upon the goods being made ready for collection. Specifically, all shipping and insurance costs shall be borne by the Buyer, and the Buyer shall be solely responsible for any delays, losses, damages, or liabilities whatsoever that may occur during transport.'],
+['Invoice Date:','Products are invoiced upon delivery of the goods, and services are invoiced after the completion of the rendered service.'],
+['Installation:','The installation of the products, their dismantling from the installation site, commissioning, and supervision services are not included in our prices. Installation and other technical service fees are subject to a charge and will be quoted separately.'],
+['Warranty:','The warranty period for faults arising from manufacturing defects is twelve (12) months from the invoice date. Malfunctions resulting from incorrect product selection, improper installation and operating conditions, unsuitable storage, as well as consumables and measuring sensors, are excluded from the warranty.'],
+['Penalties:','A late payment interest of 4% per month is applied to overdue invoices, starting from the maturity date. Should the buyer unilaterally withdraw after the mutual contract is signed, a penalty invoice equal to 20% of the order amount will be issued, and any advance payment received will not be refunded. The Bursa Courts and Execution Offices are authorized for disputes arising from this contract.'],
+['Change in Law in the Country of Execution:','The Supplier\u2019s obligations and the agreed-upon pricing are based on all Laws (including statutes, regulations, decrees, and official governmental or judicial interpretations thereof, including, but not limited to, taxation and import/export regulations) in effect in the country where the Order works are executed as of the date of this Order.\nThe Buyer shall promptly notify the Supplier of any actual or anticipated change, introduction, repeal, or modification to these Laws that occurs on or after the date of this Order.\nIf any such legal change directly imposes an Additional Cost or causes a delay upon the Supplier in the performance of its duties, the Supplier shall be entitled to full relief. This relief shall take the form of the Completion Date being extended for the entire period of delay suffered, and the Contract Price being equitably adjusted to cover all substantiated Additional Costs incurred by the Supplier to fully comply with the Change in Law.'],
+['Force Majeure:','Neither party shall be liable for any failure or delay in performance caused by an event of Force Majeure, which is defined as any unforeseen event beyond that party\u2019s reasonable control that hinders or prevents performance. These events include, but are not limited to, Acts of God, war, hostilities, epidemics, government actions, and general labor strikes.\nThe affected party must provide immediate written notice of the event, its expected duration, and its effect on performance, and must use all reasonable efforts to mitigate its impact. If the Force Majeure event persists for more than three (3) months, either party may terminate this Order upon written notice, and neither party shall incur any further liability, except for obligations accrued prior to termination.']
 ];
 
-function renderNav() {
-  navBar.innerHTML = '';
-  NAV_ITEMS.forEach(item => {
-    const b = document.createElement('button');
-    b.textContent = item.label;
-    if (VIEW === item.id) b.className = 'active';
-    b.onclick = () => { VIEW = item.id; route(); };
+const CURSYM={EUR:'\u20AC',USD:'$',EGP:'EGP ',TRY:'\u20BA'};
+
+/* ============ UTIL ============ */
+function fmt(n){
+  const v=parseFloat(n);
+  if(isNaN(v))return '0.00';
+  return v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function money(n,cur){
+  const s=CURSYM[cur]||'';
+  return (cur==='EUR'||cur==='TRY')? fmt(n)+' '+s : s+fmt(n);
+}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+function today(){return new Date().toISOString().slice(0,10)}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)}
+function dmy(d){if(!d)return '';const p=String(d).slice(0,10).split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d}
+
+/* ============ API ============ */
+async function nc(path,opts={}){
+  const r=await fetch(API_BASE+path,{...opts,headers:{'xc-token':API_TOKEN,'Content-Type':'application/json',...(opts.headers||{})}});
+  if(!r.ok){const t=await r.text();throw new Error(`API ${r.status}: ${t.slice(0,250)}`)}
+  const ct=r.headers.get('content-type')||'';
+  return ct.includes('json')? r.json():null;
+}
+const listRec=(tid,p={})=>nc(`/tables/${tid}/records?${new URLSearchParams({limit:1000,...p})}`);
+const getRec=(tid,id)=>nc(`/tables/${tid}/records/${id}`);
+const createRec=(tid,f)=>nc(`/tables/${tid}/records`,{method:'POST',body:JSON.stringify(f)});
+const updateRec=(tid,id,f)=>nc(`/tables/${tid}/records`,{method:'PATCH',body:JSON.stringify([{Id:id,...f}])});
+const deleteRec=(tid,id)=>nc(`/tables/${tid}/records`,{method:'DELETE',body:JSON.stringify([{Id:id}])});
+const link=(tid,fid,rid,ids)=>nc(`/tables/${tid}/links/${fid}/records/${rid}`,{method:'POST',body:JSON.stringify((Array.isArray(ids)?ids:[ids]).map(i=>({Id:i})))});
+const unlink=(tid,fid,rid,ids)=>nc(`/tables/${tid}/links/${fid}/records/${rid}`,{method:'DELETE',body:JSON.stringify((Array.isArray(ids)?ids:[ids]).map(i=>({Id:i})))});
+
+/* ============ SCHEMA ============ */
+let SCHEMA={},T={};
+async function loadSchema(){
+  const r=await nc(`/meta/bases/${BASE_ID}/tables`);
+  for(const t of r.list){SCHEMA[t.title]=await nc(`/meta/tables/${t.id}`)}
+}
+function tbl(...names){
+  for(const n of names){
+    const k=Object.keys(SCHEMA).find(k=>k.toLowerCase().replace(/[^a-z0-9]/g,'')===n.toLowerCase().replace(/[^a-z0-9]/g,''));
+    if(k)return SCHEMA[k];
+  }
+  throw new Error(`Table not found: ${names[0]}. Available: ${Object.keys(SCHEMA).join(', ')}`);
+}
+function col(t,...kws){
+  for(const kw of kws){
+    let c=t.columns.find(c=>c.title.toLowerCase()===kw.toLowerCase());
+    if(c)return c;
+  }
+  for(const kw of kws){
+    let c=t.columns.find(c=>c.title.toLowerCase().replace(/[^a-z0-9]/g,'').includes(kw.toLowerCase().replace(/[^a-z0-9]/g,'')));
+    if(c)return c;
+  }
+  return null;
+}
+function pv(t){return t.columns.find(c=>c.pv)||t.columns[0]}
+function cn(t,...kws){const c=col(t,...kws);return c?c.title:null}
+function linkedId(rec,title){
+  if(!title)return null;
+  const v=rec[title];
+  if(!v)return null;
+  if(Array.isArray(v))return v[0]?.Id??null;
+  if(typeof v==='object')return v.Id??null;
+  return null;
+}
+function linkedName(rec,title){
+  if(!title)return '';
+  const v=rec[title];
+  if(!v)return '';
+  const one=x=>{const k=Object.keys(x).find(k=>k!=='Id');return k?x[k]:x.Id};
+  if(Array.isArray(v))return v.map(one).join(', ');
+  if(typeof v==='object')return one(v);
+  return String(v);
+}
+async function childrenOf(childTbl,linkKws,parentId){
+  const lc=col(childTbl,...linkKws);
+  if(!lc)return [];
+  const r=await listRec(childTbl.id,{limit:2000});
+  return (r.list||[]).filter(x=>linkedId(x,lc.title)===parentId);
+}
+
+/* ============ STATE ============ */
+let VIEW='home',app,navBar,connStatus;
+const NAV=[['home','🏠 Home'],['search','🔍 Search'],['companies','🏢 Companies'],['newRfq','➕ New RFQ'],['suppliers','🚚 Suppliers'],['products','📦 Products'],['dashboard','📊 Dashboard']];
+
+function drawNav(){
+  navBar.innerHTML='';
+  NAV.forEach(([id,lab])=>{
+    const b=document.createElement('button');
+    b.textContent=lab;
+    if(VIEW===id)b.className='active';
+    b.onclick=()=>{VIEW=id;route()};
     navBar.appendChild(b);
   });
 }
+function route(){
+  drawNav();
+  ({home:renderHome,search:renderSearch,companies:renderCompanies,newRfq:renderNewRfq,
+    suppliers:renderSuppliers,products:renderProducts,dashboard:renderDashboard}[VIEW]||renderHome)();
+}
 
-/* ================= INIT ================= */
-(async function init() {
-  try {
+/* ============ INIT ============ */
+window.addEventListener('DOMContentLoaded',async()=>{
+  app=document.getElementById('app');navBar=document.getElementById('navBar');connStatus=document.getElementById('connStatus');
+  try{
     await loadSchema();
-    T.Suppliers = getTable('Suppliers');
-    T.Products = getTable('Products');
-    T.Companies = getTable('Companies');
-    T.Contacts = getTable('Contacts');
-    T.RFQs = (function(){ try { return getTable('RFQs'); } catch(e) { return getTable('RFQ'); } })();
-    T.Revisions = getTable('RFQ_Revisions');
-    T.Items = getTable('RFQ_Items');
-    connStatus.textContent = '✅ Connected';
-    renderNav();
+    T.Sup=tbl('Suppliers');T.Prod=tbl('Products');T.Comp=tbl('Companies');
+    T.Cont=tbl('Contacts');T.RFQ=tbl('RFQs','RFQ');T.Rev=tbl('RFQ_Revisions');T.Item=tbl('RFQ_Items');
+    connStatus.textContent='✅ Connected';
     route();
-  } catch (e) {
-    connStatus.textContent = '❌ Connection failed';
-    app.innerHTML = `<div class="card err">
-      <strong>Could not connect / load schema.</strong><br><br>
-      ${e.message}<br><br>
-      Check: API token valid, Base ID correct, table names match (Suppliers, Products, Companies, Contacts, RFQs, RFQ_Revisions, RFQ_Items).
-    </div>`;
+  }catch(e){
+    connStatus.textContent='❌ Failed';
+    app.innerHTML=`<div class="card err"><b>Could not load schema.</b><br><br>${esc(e.message)}</div>`;
   }
-})();
+});
 
-function route() {
-  renderNav();
-  if (VIEW === 'home') return renderHome();
-  if (VIEW === 'search') return renderSearch();
-  if (VIEW === 'companies') return renderCompaniesList();
-  if (VIEW === 'newRfq') return renderNewRfq();
-  if (VIEW === 'dashboard') return renderDashboard();
-  if (VIEW === 'suppliers') return renderSuppliers();
-  if (VIEW === 'products') return renderProducts();
+/* ============ HOME ============ */
+function renderHome(){
+  app.innerHTML=`<div class="tiles">
+    <div class="tile" onclick="VIEW='newRfq';route()"><h3>➕ New RFQ</h3><p>Start a new quotation.</p></div>
+    <div class="tile" onclick="VIEW='search';route()"><h3>🔍 Search</h3><p>Find quotations or products.</p></div>
+    <div class="tile" onclick="VIEW='companies';route()"><h3>🏢 Companies</h3><p>Clients, contacts, their RFQs.</p></div>
+    <div class="tile" onclick="VIEW='suppliers';route()"><h3>🚚 Suppliers</h3><p>Suppliers and their catalogues.</p></div>
+    <div class="tile" onclick="VIEW='products';route()"><h3>📦 Products</h3><p>Catalogue, specs, price dates.</p></div>
+    <div class="tile" onclick="VIEW='dashboard';route()"><h3>📊 Dashboard</h3><p>Profit and pipeline.</p></div>
+  </div>`;
 }
 
-/* ================= HOME ================= */
-function renderHome() {
-  app.innerHTML = `
-    <div class="grid3">
-      <div class="card clickable" onclick="VIEW='search';route()"><h2>🔍 Search</h2>Find RFQs or Products fast.</div>
-      <div class="card clickable" onclick="VIEW='companies';route()"><h2>🏢 Companies</h2>View all companies, contacts & their RFQs.</div>
-      <div class="card clickable" onclick="VIEW='newRfq';route()"><h2>➕ New RFQ</h2>Start a new quotation.</div>
-      <div class="card clickable" onclick="VIEW='dashboard';route()"><h2>📊 Dashboard</h2>Profit & pipeline overview.</div>
-      <div class="card clickable" onclick="VIEW='suppliers';route()"><h2>🚚 Suppliers</h2>Manage supplier list.</div>
-      <div class="card clickable" onclick="VIEW='products';route()"><h2>📦 Products</h2>Manage product catalog.</div>
+/* ============ PRICE AGE ============ */
+function priceAge(d){
+  if(!d)return '<span class="pill p-none">no date</span>';
+  const days=(Date.now()-new Date(d).getTime())/864e5;
+  const label=dmy(d);
+  if(days<=180)return `<span class="pill p-fresh">${label}</span>`;
+  if(days<=365)return `<span class="pill p-mid">${label}</span>`;
+  return `<span class="pill p-old">${label}</span>`;
+}
+
+/* ============ SUPPLIERS ============ */
+async function renderSuppliers(){
+  app.innerHTML='<div class="loader">Loading suppliers…</div>';
+  const [s,p]=await Promise.all([listRec(T.Sup.id),listRec(T.Prod.id,{limit:2000})]);
+  const sups=s.list||[],prods=p.list||[];
+  const nm=pv(T.Sup).title,ct=cn(T.Sup,'contact'),ph=cn(T.Sup,'phone'),em=cn(T.Sup,'email');
+  const supLink=cn(T.Prod,'supplier');
+  app.innerHTML=`
+  <div class="card">
+    <h2>Add Supplier</h2>
+    <div class="g4">
+      <div><label>Name</label><input id="sN"></div>
+      <div><label>Contact</label><input id="sC"></div>
+      <div><label>Phone</label><input id="sP"></div>
+      <div><label>Email</label><input id="sE"></div>
     </div>
-  `;
+    <div class="btnrow"><button class="primary" onclick="saveSupplier()">Save Supplier</button></div>
+    <div id="sMsg"></div>
+  </div>
+  <div class="card">
+    <h2>Suppliers (${sups.length})</h2>
+    <p class="muted">Click a supplier to see their products and prices.</p>
+    <table><tr><th>Name</th><th>Contact</th><th>Phone</th><th>Email</th><th>Products</th></tr>
+    ${sups.map(x=>{
+      const n=prods.filter(pr=>linkedId(pr,supLink)===x.Id).length;
+      return `<tr class="clickrow" onclick="openSupplier(${x.Id})"><td class="link"><b>${esc(x[nm])}</b></td><td>${esc(x[ct]||'')}</td><td>${esc(x[ph]||'')}</td><td>${esc(x[em]||'')}</td><td>${n}</td></tr>`;
+    }).join('')||'<tr><td colspan="5" class="muted">None yet.</td></tr>'}
+    </table>
+  </div>`;
 }
-
-/* ================= SEARCH ================= */
-function renderSearch() {
-  app.innerHTML = `
-    <div class="card">
-      <h2>Search RFQs</h2>
-      <input id="rfqSearchBox" placeholder="Type RFQ number or company name...">
-      <div id="rfqSearchResults"></div>
-    </div>
-    <div class="card">
-      <h2>Search Products</h2>
-      <input id="prodSearchBox" placeholder="Type product name or SKU...">
-      <div id="prodSearchResults"></div>
-    </div>
-  `;
-  document.getElementById('rfqSearchBox').addEventListener('input', debounce(doRfqSearch, 400));
-  document.getElementById('prodSearchBox').addEventListener('input', debounce(doProdSearch, 400));
-}
-
-function debounce(fn, ms) {
-  let t; return (...a) => { clearTimeout(t); t = setTimeout(()=>fn(...a), ms); };
-}
-
-async function doRfqSearch() {
-  const q = document.getElementById('rfqSearchBox').value.trim();
-  const box = document.getElementById('rfqSearchResults');
-  if (!q) { box.innerHTML=''; return; }
-  box.innerHTML = '<div class="loader">Searching...</div>';
-  const dealCol = primaryCol(T.RFQs);
-  const rfqNumCol = findCol(T.RFQs, ['rfq number','quotation number']);
-  const companyCol = findCol(T.RFQs, ['company']);
-  const resp = await listRecords(T.RFQs.id, { limit: 100 });
-  const list = resp.list || [];
-  const matches = list.filter(r => {
-    const deal = (r[dealCol.title]||'').toString().toLowerCase();
-    const num = (r[rfqNumCol?.title]||'').toString().toLowerCase();
-    const comp = getLinkedDisplay(r, companyCol?.title);
-    return deal.includes(q.toLowerCase()) || num.includes(q.toLowerCase()) || comp.toLowerCase().includes(q.toLowerCase());
-  });
-  if (!matches.length) { box.innerHTML = '<div class="warn">No matches.</div>'; return; }
-  box.innerHTML = `<table><tr><th>RFQ Number</th><th>Deal</th><th>Company</th><th>Status</th><th></th></tr>` +
-    matches.map(r => `<tr>
-      <td>${r[rfqNumCol?.title]||''}</td>
-      <td>${r[dealCol.title]||''}</td>
-      <td>${getLinkedDisplay(r, companyCol?.title)}</td>
-      <td>${r[findCol(T.RFQs,['status'])?.title]||''}</td>
-      <td><button class="small" onclick="openRfq(${r.Id})">Open</button></td>
-    </tr>`).join('') + `</table>`;
-}
-
-async function doProdSearch() {
-  const q = document.getElementById('prodSearchBox').value.trim();
-  const box = document.getElementById('prodSearchResults');
-  if (!q) { box.innerHTML=''; return; }
-  box.innerHTML = '<div class="loader">Searching...</div>';
-  const nameCol = findCol(T.Products, ['name']) || primaryCol(T.Products);
-  const skuCol = findCol(T.Products, ['sku']) || primaryCol(T.Products);
-  const costCol = findCol(T.Products, ['cost']);
-  const resp = await listRecords(T.Products.id, { limit: 500 });
-  const list = resp.list || [];
-  const matches = list.filter(r =>
-    (r[nameCol.title]||'').toString().toLowerCase().includes(q.toLowerCase()) ||
-    (r[skuCol.title]||'').toString().toLowerCase().includes(q.toLowerCase())
-  );
-  if (!matches.length) { box.innerHTML = '<div class="warn">No matches.</div>'; return; }
-  box.innerHTML = `<table><tr><th>SKU</th><th>Name</th><th>Cost</th></tr>` +
-    matches.map(r => `<tr><td>${r[skuCol.title]||''}</td><td>${r[nameCol.title]||''}</td><td>${r[costCol?.title]||''}</td></tr>`).join('') +
-    `</table>`;
-}
-
-function getLinkedDisplay(record, fieldTitle) {
-  if (!fieldTitle) return '';
-  const v = record[fieldTitle];
-  if (!v) return '';
-  if (Array.isArray(v)) return v.map(x => x[Object.keys(x).find(k=>k!=='Id')] || x.Id).join(', ');
-  if (typeof v === 'object') return v[Object.keys(v).find(k=>k!=='Id')] || v.Id;
-  return v.toString();
-}
-function getLinkedId(record, fieldTitle) {
-  if (!fieldTitle) return null;
-  const v = record[fieldTitle];
-  if (!v) return null;
-  if (Array.isArray(v)) return v[0]?.Id || null;
-  if (typeof v === 'object') return v.Id || null;
-  return null;
-}
-
-/* ================= SUPPLIERS ================= */
-async function renderSuppliers() {
-  app.innerHTML = `<div class="loader">Loading suppliers...</div>`;
-  const resp = await listRecords(T.Suppliers.id, { limit: 500 });
-  const nameCol = primaryCol(T.Suppliers);
-  const contactCol = findCol(T.Suppliers, ['contact']);
-  const phoneCol = findCol(T.Suppliers, ['phone']);
-  const emailCol = findCol(T.Suppliers, ['email']);
-  app.innerHTML = `
-    <div class="card">
-      <h2>Add Supplier</h2>
-      <div class="grid2">
-        <div><label>Name</label><input id="supName"></div>
-        <div><label>Contact</label><input id="supContact"></div>
-        <div><label>Phone</label><input id="supPhone"></div>
-        <div><label>Email</label><input id="supEmail"></div>
-      </div>
-      <button class="primary" onclick="saveSupplier()">Save Supplier</button>
-      <div id="supMsg"></div>
-    </div>
-    <div class="card">
-      <h2>All Suppliers</h2>
-      <table><tr><th>Name</th><th>Contact</th><th>Phone</th><th>Email</th></tr>
-      ${(resp.list||[]).map(r => `<tr><td>${r[nameCol.title]||''}</td><td>${r[contactCol?.title]||''}</td><td>${r[phoneCol?.title]||''}</td><td>${r[emailCol?.title]||''}</td></tr>`).join('')}
-      </table>
-    </div>
-  `;
-}
-async function saveSupplier() {
-  const nameCol = primaryCol(T.Suppliers);
-  const contactCol = findCol(T.Suppliers, ['contact']);
-  const phoneCol = findCol(T.Suppliers, ['phone']);
-  const emailCol = findCol(T.Suppliers, ['email']);
-  const name = document.getElementById('supName').value.trim();
-  const msg = document.getElementById('supMsg');
-  if (!name) { msg.innerHTML = '<div class="err">Name required</div>'; return; }
-  try {
-    const fields = { [nameCol.title]: name };
-    if (contactCol) fields[contactCol.title] = document.getElementById('supContact').value;
-    if (phoneCol) fields[phoneCol.title] = document.getElementById('supPhone').value;
-    if (emailCol) fields[emailCol.title] = document.getElementById('supEmail').value;
-    await createRecord(T.Suppliers.id, fields);
-    msg.innerHTML = '<div class="ok">Saved.</div>';
+async function saveSupplier(){
+  const m=document.getElementById('sMsg');
+  const n=document.getElementById('sN').value.trim();
+  if(!n){m.innerHTML='<div class="err">Name required.</div>';return}
+  try{
+    const f={[pv(T.Sup).title]:n};
+    const c=cn(T.Sup,'contact'),p=cn(T.Sup,'phone'),e=cn(T.Sup,'email');
+    if(c)f[c]=document.getElementById('sC').value;
+    if(p)f[p]=document.getElementById('sP').value;
+    if(e)f[e]=document.getElementById('sE').value;
+    await createRec(T.Sup.id,f);
     renderSuppliers();
-  } catch(e) { msg.innerHTML = `<div class="err">${e.message}</div>`; }
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
 }
 
-/* ================= PRODUCTS ================= */
-async function renderProducts() {
-  app.innerHTML = `<div class="loader">Loading products...</div>`;
-  const [prodResp, supResp] = await Promise.all([
-    listRecords(T.Products.id, { limit: 1000 }),
-    listRecords(T.Suppliers.id, { limit: 500 })
-  ]);
-  const nameCol = findCol(T.Products, ['name']) || primaryCol(T.Products);
-  const skuCol = primaryCol(T.Products);
-  const supCol = findCol(T.Products, ['supplier']);
-  const costCol = findCol(T.Products, ['cost']);
-  const catCol = findCol(T.Products, ['category']);
-  const descCol = findCol(T.Products, ['description']);
-  const supplierOptions = (supResp.list||[]).map(s => `<option value="${s.Id}">${s[primaryCol(T.Suppliers).title]}</option>`).join('');
+async function openSupplier(id){
+  app.innerHTML='<div class="loader">Loading…</div>';
+  const sup=await getRec(T.Sup.id,id);
+  const prods=await childrenOf(T.Prod,['supplier'],id);
+  const nm=pv(T.Sup).title;
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated');
+  app.innerHTML=`
+  <div class="card">
+    <h2>${esc(sup[nm])}</h2>
+    <p class="muted">${esc(sup[cn(T.Sup,'contact')]||'')} ${esc(sup[cn(T.Sup,'phone')]||'')} ${esc(sup[cn(T.Sup,'email')]||'')}</p>
+  </div>
+  <div class="card">
+    <h2>Products (${prods.length})</h2>
+    <p class="muted">Click any product to edit it. Price date colour: green under 6 months, amber under a year, red older.</p>
+    <table><tr><th>SKU</th><th>Name</th><th>Category</th><th>Cost</th><th>Price date</th></tr>
+    ${prods.map(p=>`<tr class="clickrow" onclick="editProduct(${p.Id})">
+      <td class="link"><b>${esc(p[sku]||'')}</b></td><td>${esc(p[pn]||'')}</td><td>${esc(p[cat]||'')}</td>
+      <td>${fmt(p[cost])}</td><td>${priceAge(p[pd])}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No products yet.</td></tr>'}
+    </table>
+    <div class="btnrow"><button class="ghost" onclick="VIEW='suppliers';route()">← Back</button></div>
+  </div>`;
+}
 
-  app.innerHTML = `
-    <div class="card">
-      <h2>Add Product</h2>
-      <div class="grid2">
-        <div><label>SKU</label><input id="pSku"></div>
-        <div><label>Name</label><input id="pName"></div>
-        <div><label>Supplier</label><select id="pSupplier"><option value="">-- select --</option>${supplierOptions}</select></div>
-        <div><label>Cost Price</label><input id="pCost" type="number" step="0.01"></div>
-        <div><label>Category</label><input id="pCategory"></div>
-        <div><label>Description</label><textarea id="pDesc"></textarea></div>
-      </div>
-      <button class="primary" onclick="saveProduct()">Save Product</button>
-      <div id="pMsg"></div>
+/* ============ PRODUCTS ============ */
+async function renderProducts(){
+  app.innerHTML='<div class="loader">Loading products…</div>';
+  const [p,s]=await Promise.all([listRec(T.Prod.id,{limit:2000}),listRec(T.Sup.id)]);
+  window._prods=p.list||[];window._sups=s.list||[];
+  const sn=pv(T.Sup).title;
+  app.innerHTML=`
+  <div class="card">
+    <h2>Add Product</h2>
+    <div class="g3">
+      <div><label>SKU</label><input id="pS"></div>
+      <div><label>Name</label><input id="pN"></div>
+      <div><label>Supplier</label><select id="pSup"><option value="">— none —</option>${window._sups.map(x=>`<option value="${x.Id}">${esc(x[sn])}</option>`).join('')}</select></div>
+      <div><label>Cost Price</label><input id="pC" type="number" step="0.01"></div>
+      <div><label>Price Date</label><input id="pD" type="date"></div>
+      <div><label>Category</label><input id="pCat"></div>
     </div>
-    <div class="card">
-      <h2>All Products (${(prodResp.list||[]).length})</h2>
-      <input placeholder="Filter..." oninput="filterProductTable(this.value)">
-      <table id="prodTable"><tr><th>SKU</th><th>Name</th><th>Cost</th><th>Category</th></tr>
-      ${(prodResp.list||[]).map(r => `<tr><td>${r[skuCol.title]||''}</td><td>${r[nameCol.title]||''}</td><td>${r[costCol?.title]||''}</td><td>${r[catCol?.title]||''}</td></tr>`).join('')}
-      </table>
-    </div>
-  `;
+    <label>Specifications</label>
+    <textarea id="pSpec" placeholder="Manufacturer: …&#10;Origin: …&#10;Model: …&#10;&#10;Scope of Supply:&#10;…"></textarea>
+    <div class="btnrow"><button class="primary" onclick="saveProduct()">Save Product</button></div>
+    <div id="pMsg"></div>
+  </div>
+  <div class="card">
+    <h2>Catalogue (${window._prods.length})</h2>
+    <input id="pFilter" placeholder="Filter by SKU, name or category…" oninput="drawProdTable()">
+    <div id="prodTable"></div>
+  </div>`;
+  drawProdTable();
 }
-function filterProductTable(q) {
-  const rows = document.querySelectorAll('#prodTable tr');
-  rows.forEach((r,i) => { if(i===0) return; r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none'; });
+function drawProdTable(){
+  const q=(document.getElementById('pFilter')?.value||'').toLowerCase();
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sl=cn(T.Prod,'supplier');
+  const rows=window._prods.filter(p=>!q||[p[sku],p[pn],p[cat]].some(v=>String(v||'').toLowerCase().includes(q)));
+  document.getElementById('prodTable').innerHTML=`<table><tr><th>SKU</th><th>Name</th><th>Supplier</th><th>Category</th><th>Cost</th><th>Price date</th></tr>
+  ${rows.map(p=>`<tr class="clickrow" onclick="editProduct(${p.Id})"><td class="link"><b>${esc(p[sku]||'')}</b></td><td>${esc(p[pn]||'')}</td>
+  <td>${esc(linkedName(p,sl))}</td><td>${esc(p[cat]||'')}</td><td>${fmt(p[cost])}</td><td>${priceAge(p[pd])}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No matches.</td></tr>'}</table>`;
 }
-async function saveProduct() {
-  const nameCol = findCol(T.Products, ['name']) || primaryCol(T.Products);
-  const skuCol = primaryCol(T.Products);
-  const supCol = findCol(T.Products, ['supplier']);
-  const costCol = findCol(T.Products, ['cost']);
-  const catCol = findCol(T.Products, ['category']);
-  const descCol = findCol(T.Products, ['description']);
-  const msg = document.getElementById('pMsg');
-  const sku = document.getElementById('pSku').value.trim();
-  const name = document.getElementById('pName').value.trim();
-  if (!sku && !name) { msg.innerHTML = '<div class="err">SKU/Name required</div>'; return; }
-  try {
-    const fields = {};
-    fields[skuCol.title] = sku || name;
-    if (nameCol.title !== skuCol.title) fields[nameCol.title] = name;
-    if (costCol) fields[costCol.title] = parseFloat(document.getElementById('pCost').value)||0;
-    if (catCol) fields[catCol.title] = document.getElementById('pCategory').value;
-    if (descCol) fields[descCol.title] = document.getElementById('pDesc').value;
-    const rec = await createRecord(T.Products.id, fields);
-    const supId = document.getElementById('pSupplier').value;
-    if (supId && supCol) await linkRecords(T.Products.id, supCol.id, rec.Id, [parseInt(supId)]);
-    msg.innerHTML = '<div class="ok">Saved.</div>';
+async function saveProduct(){
+  const m=document.getElementById('pMsg');
+  const sku=document.getElementById('pS').value.trim(),name=document.getElementById('pN').value.trim();
+  if(!sku&&!name){m.innerHTML='<div class="err">SKU or name required.</div>';return}
+  try{
+    const f={};
+    f[pv(T.Prod).title]=sku||name;
+    const nc_=cn(T.Prod,'name'),cc=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification');
+    if(nc_&&nc_!==pv(T.Prod).title)f[nc_]=name;
+    if(cc)f[cc]=parseFloat(document.getElementById('pC').value)||0;
+    if(cat)f[cat]=document.getElementById('pCat').value;
+    if(pd&&document.getElementById('pD').value)f[pd]=document.getElementById('pD').value;
+    if(sp)f[sp]=document.getElementById('pSpec').value;
+    const rec=await createRec(T.Prod.id,f);
+    const sid=document.getElementById('pSup').value;
+    const sl=col(T.Prod,'supplier');
+    if(sid&&sl)await link(T.Prod.id,sl.id,rec.Id,[parseInt(sid)]);
     renderProducts();
-  } catch(e) { msg.innerHTML = `<div class="err">${e.message}</div>`; }
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
 }
 
-/* ================= COMPANIES ================= */
-async function renderCompaniesList() {
-  app.innerHTML = `<div class="loader">Loading companies...</div>`;
-  const resp = await listRecords(T.Companies.id, { limit: 1000 });
-  const nameCol = primaryCol(T.Companies);
-  const codeCol = findCol(T.Companies, ['client code']);
-  const list = resp.list || [];
-  app.innerHTML = `
-    <div class="card">
-      <h2>Add Company</h2>
-      <div class="grid2">
-        <div><label>Company Name</label><input id="cName" oninput="checkDup(this.value)"></div>
-        <div><label>Address</label><input id="cAddress"></div>
-        <div><label>Phone</label><input id="cPhone"></div>
-        <div><label>Email</label><input id="cEmail"></div>
-      </div>
-      <div id="dupWarn"></div>
-      <button class="primary" onclick="saveCompany()">Save Company</button>
-      <div id="cMsg"></div>
+async function editProduct(id){
+  const p=await getRec(T.Prod.id,id);
+  const sups=(await listRec(T.Sup.id)).list||[];
+  const sn=pv(T.Sup).title;
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification'),sl=cn(T.Prod,'supplier');
+  const curSup=linkedId(p,sl);
+  const d=document.createElement('div');
+  d.className='modal';d.id='pModal';
+  d.innerHTML=`<div class="inner">
+    <h2>Edit Product</h2>
+    <div class="g3">
+      <div><label>SKU</label><input id="eS" value="${esc(p[sku]||'')}"></div>
+      <div><label>Name</label><input id="eN" value="${esc(p[pn]||'')}"></div>
+      <div><label>Supplier</label><select id="eSup"><option value="">— none —</option>${sups.map(x=>`<option value="${x.Id}" ${x.Id===curSup?'selected':''}>${esc(x[sn])}</option>`).join('')}</select></div>
+      <div><label>Cost Price</label><input id="eC" type="number" step="0.01" value="${p[cost]??''}"></div>
+      <div><label>Price Date</label><input id="eD" type="date" value="${(p[pd]||'').slice(0,10)}"></div>
+      <div><label>Category</label><input id="eCat" value="${esc(p[cat]||'')}"></div>
     </div>
-    <div class="card">
-      <h2>All Companies (${list.length})</h2>
-      <input placeholder="Filter..." oninput="filterCompanyTable(this.value)">
-      <table id="compTable"><tr><th>Code</th><th>Name</th><th></th></tr>
-      ${list.map(r => `<tr><td>${r[codeCol?.title]||''}</td><td>${r[nameCol.title]||''}</td><td><button class="small" onclick="openCompany(${r.Id})">View</button></td></tr>`).join('')}
-      </table>
+    <label>Specifications</label>
+    <textarea id="eSpec" style="min-height:200px">${esc(p[sp]||'')}</textarea>
+    <div class="btnrow">
+      <button class="primary" onclick="saveProductEdit(${id})">Save Changes</button>
+      <button class="ghost" onclick="document.getElementById('pModal').remove()">Cancel</button>
+      <button class="danger" style="margin-left:auto" onclick="deleteProduct(${id})">Delete</button>
     </div>
-  `;
-  window._companiesCache = list;
+    <div id="eMsg"></div>
+  </div>`;
+  document.body.appendChild(d);
 }
-function filterCompanyTable(q) {
-  const rows = document.querySelectorAll('#compTable tr');
-  rows.forEach((r,i) => { if(i===0) return; r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none'; });
+async function saveProductEdit(id){
+  const m=document.getElementById('eMsg');
+  try{
+    const f={};
+    const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification');
+    f[sku]=document.getElementById('eS').value;
+    if(pn&&pn!==sku)f[pn]=document.getElementById('eN').value;
+    if(cost)f[cost]=parseFloat(document.getElementById('eC').value)||0;
+    if(cat)f[cat]=document.getElementById('eCat').value;
+    if(pd)f[pd]=document.getElementById('eD').value||null;
+    if(sp)f[sp]=document.getElementById('eSpec').value;
+    await updateRec(T.Prod.id,id,f);
+    const sl=col(T.Prod,'supplier');
+    if(sl){
+      const cur=await getRec(T.Prod.id,id);
+      const old=linkedId(cur,sl.title);
+      const nw=parseInt(document.getElementById('eSup').value)||null;
+      if(old!==nw){
+        if(old)try{await unlink(T.Prod.id,sl.id,id,[old])}catch(e){}
+        if(nw)await link(T.Prod.id,sl.id,id,[nw]);
+      }
+    }
+    document.getElementById('pModal').remove();
+    route();
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
 }
-function checkDup(val) {
-  const nameCol = primaryCol(T.Companies);
-  const dup = (window._companiesCache||[]).find(c => (c[nameCol.title]||'').toLowerCase() === val.trim().toLowerCase());
-  document.getElementById('dupWarn').innerHTML = dup ? '<div class="warn">⚠️ A company with this exact name already exists.</div>' : '';
-}
-async function saveCompany() {
-  const nameCol = primaryCol(T.Companies);
-  const addrCol = findCol(T.Companies, ['address']);
-  const phoneCol = findCol(T.Companies, ['phone']);
-  const emailCol = findCol(T.Companies, ['email']);
-  const msg = document.getElementById('cMsg');
-  const name = document.getElementById('cName').value.trim();
-  if (!name) { msg.innerHTML = '<div class="err">Name required</div>'; return; }
-  try {
-    const fields = { [nameCol.title]: name };
-    if (addrCol) fields[addrCol.title] = document.getElementById('cAddress').value;
-    if (phoneCol) fields[phoneCol.title] = document.getElementById('cPhone').value;
-    if (emailCol) fields[emailCol.title] = document.getElementById('cEmail').value;
-    await createRecord(T.Companies.id, fields);
-    msg.innerHTML = '<div class="ok">Saved.</div>';
-    renderCompaniesList();
-  } catch(e) { msg.innerHTML = `<div class="err">${e.message}</div>`; }
-}
-
-async function openCompany(companyId) {
-  app.innerHTML = `<div class="loader">Loading company...</div>`;
-  const nameCol = primaryCol(T.Companies);
-  const codeCol = findCol(T.Companies, ['client code']);
-  const addrCol = findCol(T.Companies, ['address']);
-  const phoneCol = findCol(T.Companies, ['phone']);
-  const emailCol = findCol(T.Companies, ['email']);
-  const contactsLinkCol = findCol(T.Companies, ['contacts']);
-  const rfqsLinkCol = findCol(T.Companies, ['rfqs']);
-
-  const comp = await ncFetch(`/tables/${T.Companies.id}/records/${companyId}`);
-  const contacts = contactsLinkCol ? await listLinked(T.Companies.id, contactsLinkCol.id, companyId) : {list:[]};
-  const rfqs = rfqsLinkCol ? await listLinked(T.Companies.id, rfqsLinkCol.id, companyId) : {list:[]};
-
-  const rfqNumCol = findCol(T.RFQs, ['rfq number']);
-  const statusCol = findCol(T.RFQs, ['status']);
-  const dealCol = primaryCol(T.RFQs);
-
-  // fetch full RFQ records for accurate rfq number/status (linked records may be minimal)
-  let rfqRows = [];
-  for (const r of (rfqs.list||[])) {
-    try {
-      const full = await ncFetch(`/tables/${T.RFQs.id}/records/${r.Id}`);
-      rfqRows.push(full);
-    } catch(e){}
-  }
-
-  const contactNameCol = primaryCol(T.Contacts);
-  const posCol = findCol(T.Contacts, ['position']);
-  const cPhoneCol = findCol(T.Contacts, ['phone']);
-  const cEmailCol = findCol(T.Contacts, ['email']);
-
-  app.innerHTML = `
-    <div class="card">
-      <h2>${comp[nameCol.title]} <span style="font-size:12px;color:#888;">(Client Code: ${comp[codeCol?.title]||'-'})</span></h2>
-      <p>${comp[addrCol?.title]||''}<br>${comp[phoneCol?.title]||''} ${comp[emailCol?.title]?' | '+comp[emailCol.title]:''}</p>
-    </div>
-    <div class="card">
-      <h2>Contacts</h2>
-      <table><tr><th>Name</th><th>Position</th><th>Phone</th><th>Email</th></tr>
-      ${(contacts.list||[]).map(c => `<tr><td>${c[contactNameCol.title]||''}</td><td>${c[posCol?.title]||''}</td><td>${c[cPhoneCol?.title]||''}</td><td>${c[cEmailCol?.title]||''}</td></tr>`).join('') || '<tr><td colspan="4">No contacts yet.</td></tr>'}
-      </table>
-      <button class="secondary small" onclick="openAddContact(${companyId})">+ Add Contact</button>
-    </div>
-    <div class="card">
-      <h2>RFQs</h2>
-      <table><tr><th>RFQ Number</th><th>Deal</th><th>Status</th><th></th></tr>
-      ${rfqRows.map(r => `<tr><td>${r[rfqNumCol?.title]||''}</td><td>${r[dealCol.title]||''}</td><td>${r[statusCol?.title]||''}</td><td><button class="small" onclick="openRfq(${r.Id})">Open</button></td></tr>`).join('') || '<tr><td colspan="4">No RFQs yet.</td></tr>'}
-      </table>
-      <button class="secondary small" onclick="VIEW='newRfq';route()">+ New RFQ for this company</button>
-    </div>
-    <button class="secondary" onclick="VIEW='companies';route()">← Back to Companies</button>
-  `;
+async function deleteProduct(id){
+  if(!confirm('Delete this product permanently?'))return;
+  await deleteRec(T.Prod.id,id);
+  document.getElementById('pModal').remove();
+  route();
 }
 
-function openAddContact(companyId) {
-  const nameCol = primaryCol(T.Contacts);
-  const posCol = findCol(T.Contacts, ['position']);
-  const phoneCol = findCol(T.Contacts, ['phone']);
-  const emailCol = findCol(T.Contacts, ['email']);
-  const companyLinkCol = findCol(T.Contacts, ['company']);
-  const box = document.createElement('div');
-  box.className = 'card';
-  box.innerHTML = `
-    <h2>New Contact</h2>
-    <div class="grid2">
-      <div><label>Name</label><input id="ctName"></div>
-      <div><label>Position</label><input id="ctPos"></div>
-      <div><label>Phone</label><input id="ctPhone"></div>
-      <div><label>Email</label><input id="ctEmail"></div>
+/* ============ COMPANIES ============ */
+async function renderCompanies(){
+  app.innerHTML='<div class="loader">Loading companies…</div>';
+  const r=await listRec(T.Comp.id);
+  window._comps=r.list||[];
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client code','clientcode');
+  app.innerHTML=`
+  <div class="card">
+    <h2>Add Company</h2>
+    <div class="g2">
+      <div><label>Company Name</label><input id="cN" oninput="dupCheck(this.value)"></div>
+      <div><label>Client Code <span style="text-transform:none;font-weight:400">(leave blank to auto-assign)</span></label><input id="cCode" type="number" placeholder="auto"></div>
+      <div><label>Phone</label><input id="cP"></div>
+      <div><label>Email</label><input id="cE"></div>
     </div>
-    <button class="primary" onclick="saveContact(${companyId})">Save Contact</button>
+    <label>Address</label><textarea id="cA"></textarea>
+    <div id="dup"></div>
+    <div class="btnrow"><button class="primary" onclick="saveCompany()">Save Company</button></div>
+    <div id="cMsg"></div>
+  </div>
+  <div class="card">
+    <h2>Companies (${window._comps.length})</h2>
+    <input id="cFilter" placeholder="Filter…" oninput="drawCompTable()">
+    <div id="compTable"></div>
+  </div>`;
+  drawCompTable();
+}
+function drawCompTable(){
+  const q=(document.getElementById('cFilter')?.value||'').toLowerCase();
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client code','clientcode');
+  const rows=window._comps.filter(c=>!q||String(c[nm]||'').toLowerCase().includes(q));
+  document.getElementById('compTable').innerHTML=`<table><tr><th>Code</th><th>Name</th><th>Phone</th><th>Email</th></tr>
+  ${rows.map(c=>`<tr class="clickrow" onclick="openCompany(${c.Id})"><td><b>${c[code]??''}</b></td><td class="link">${esc(c[nm])}</td><td>${esc(c[cn(T.Comp,'phone')]||'')}</td><td>${esc(c[cn(T.Comp,'email')]||'')}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">No matches.</td></tr>'}</table>`;
+}
+function dupCheck(v){
+  const nm=pv(T.Comp).title;
+  const hit=(window._comps||[]).find(c=>String(c[nm]||'').trim().toLowerCase()===v.trim().toLowerCase());
+  document.getElementById('dup').innerHTML=hit?'<div class="warn">⚠️ A company with this exact name already exists.</div>':'';
+}
+async function nextClientCode(){
+  const code=cn(T.Comp,'client code','clientcode');
+  if(!code)return null;
+  const r=await listRec(T.Comp.id);
+  const max=Math.max(CLIENT_CODE_START-1,...(r.list||[]).map(c=>parseInt(c[code])||0));
+  return max+1;
+}
+async function saveCompany(){
+  const m=document.getElementById('cMsg');
+  const n=document.getElementById('cN').value.trim();
+  if(!n){m.innerHTML='<div class="err">Name required.</div>';return}
+  try{
+    const f={[pv(T.Comp).title]:n};
+    const a=cn(T.Comp,'address'),p=cn(T.Comp,'phone'),e=cn(T.Comp,'email'),code=cn(T.Comp,'client code','clientcode');
+    if(a)f[a]=document.getElementById('cA').value;
+    if(p)f[p]=document.getElementById('cP').value;
+    if(e)f[e]=document.getElementById('cE').value;
+    if(code){
+      const typed=document.getElementById('cCode').value.trim();
+      f[code]=typed? parseInt(typed): await nextClientCode();
+    }
+    await createRec(T.Comp.id,f);
+    renderCompanies();
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
+}
+
+async function openCompany(id){
+  app.innerHTML='<div class="loader">Loading…</div>';
+  const c=await getRec(T.Comp.id,id);
+  const [contacts,rfqs]=await Promise.all([childrenOf(T.Cont,['company'],id),childrenOf(T.RFQ,['company'],id)]);
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client code','clientcode');
+  const cN=pv(T.Cont).title,cPos=cn(T.Cont,'position'),cPh=cn(T.Cont,'phone'),cEm=cn(T.Cont,'email');
+  const rNum=cn(T.RFQ,'rfq number','quotation number'),rSt=cn(T.RFQ,'status'),rProj=cn(T.RFQ,'project'),rDeal=pv(T.RFQ).title;
+  app.innerHTML=`
+  <div class="card">
+    <h2>${esc(c[nm])} <span class="muted">· Client Code ${c[code]??'—'}</span></h2>
+    <p class="muted">${esc(c[cn(T.Comp,'address')]||'')}<br>${esc(c[cn(T.Comp,'phone')]||'')} ${c[cn(T.Comp,'email')]?'· '+esc(c[cn(T.Comp,'email')]):''}</p>
+  </div>
+  <div class="card">
+    <h2>Contacts (${contacts.length})</h2>
+    <table><tr><th>Name</th><th>Position</th><th>Phone</th><th>Email</th></tr>
+    ${contacts.map(x=>`<tr><td><b>${esc(x[cN])}</b></td><td>${esc(x[cPos]||'')}</td><td>${esc(x[cPh]||'')}</td><td>${esc(x[cEm]||'')}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">None yet.</td></tr>'}
+    </table>
+    <div class="btnrow"><button class="ghost" onclick="addContactForm(${id})">+ Add Contact</button></div>
+    <div id="ctForm"></div>
+  </div>
+  <div class="card">
+    <h2>Quotations (${rfqs.length})</h2>
+    <table><tr><th>Number</th><th>Project</th><th>Status</th></tr>
+    ${rfqs.map(r=>`<tr class="clickrow" onclick="openRfq(${r.Id})"><td class="link"><b>${esc(r[rNum]||'')}</b></td><td>${esc(r[rProj]||r[rDeal]||'')}</td><td>${esc(r[rSt]||'')}</td></tr>`).join('')||'<tr><td colspan="3" class="muted">None yet.</td></tr>'}
+    </table>
+    <div class="btnrow"><button class="primary" onclick="VIEW='newRfq';route()">+ New Quotation</button>
+    <button class="ghost" onclick="VIEW='companies';route()">← Back</button></div>
+  </div>`;
+}
+function addContactForm(cid){
+  document.getElementById('ctForm').innerHTML=`
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #eef1f4">
+    <div class="g4">
+      <div><label>Name</label><input id="ctN"></div>
+      <div><label>Position</label><input id="ctP"></div>
+      <div><label>Phone</label><input id="ctPh"></div>
+      <div><label>Email</label><input id="ctE"></div>
+    </div>
+    <div class="btnrow"><button class="primary" onclick="saveContact(${cid})">Save Contact</button></div>
     <div id="ctMsg"></div>
-  `;
-  app.prepend(box);
+  </div>`;
 }
-async function saveContact(companyId) {
-  const nameCol = primaryCol(T.Contacts);
-  const posCol = findCol(T.Contacts, ['position']);
-  const phoneCol = findCol(T.Contacts, ['phone']);
-  const emailCol = findCol(T.Contacts, ['email']);
-  const companyLinkCol = findCol(T.Contacts, ['company']);
-  const msg = document.getElementById('ctMsg');
-  const name = document.getElementById('ctName').value.trim();
-  if (!name) { msg.innerHTML = '<div class="err">Name required</div>'; return; }
-  try {
-    const fields = { [nameCol.title]: name };
-    if (posCol) fields[posCol.title] = document.getElementById('ctPos').value;
-    if (phoneCol) fields[phoneCol.title] = document.getElementById('ctPhone').value;
-    if (emailCol) fields[emailCol.title] = document.getElementById('ctEmail').value;
-    const rec = await createRecord(T.Contacts.id, fields);
-    if (companyLinkCol) await linkRecords(T.Contacts.id, companyLinkCol.id, rec.Id, [companyId]);
-    openCompany(companyId);
-  } catch(e) { msg.innerHTML = `<div class="err">${e.message}</div>`; }
+async function saveContact(cid){
+  const m=document.getElementById('ctMsg');
+  const n=document.getElementById('ctN').value.trim();
+  if(!n){m.innerHTML='<div class="err">Name required.</div>';return}
+  try{
+    const f={[pv(T.Cont).title]:n};
+    const p=cn(T.Cont,'position'),ph=cn(T.Cont,'phone'),e=cn(T.Cont,'email');
+    if(p)f[p]=document.getElementById('ctP').value;
+    if(ph)f[ph]=document.getElementById('ctPh').value;
+    if(e)f[e]=document.getElementById('ctE').value;
+    const rec=await createRec(T.Cont.id,f);
+    const cl=col(T.Cont,'company');
+    if(cl)await link(T.Cont.id,cl.id,rec.Id,[cid]);
+    openCompany(cid);
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
 }
 
-/* ================= NEW RFQ ================= */
-async function renderNewRfq() {
-  app.innerHTML = `<div class="loader">Loading...</div>`;
-  const companies = await listRecords(T.Companies.id, { limit: 1000 });
-  const nameCol = primaryCol(T.Companies);
-  const statusCol = findCol(T.RFQs, ['status']);
-  const statusOptions = (statusCol?.colOptions?.options||[]).map(o => `<option value="${o.title}">${o.title}</option>`).join('');
-
-  app.innerHTML = `
-    <div class="card">
-      <h2>New RFQ</h2>
-      <div class="grid2">
-        <div>
-          <label>Company</label>
-          <div class="autocomplete-box">
-            <input id="rfqCompanySearch" placeholder="Type company name...">
-            <div id="rfqCompanyList" class="ac-list" style="display:none;"></div>
-          </div>
-          <input type="hidden" id="rfqCompanyId">
-        </div>
-        <div><label>Deal Name</label><input id="rfqDealName" placeholder="e.g. CCC - Blowers Order"></div>
-        <div><label>Status</label><select id="rfqStatus">${statusOptions}</select></div>
-        <div><label>Payment Terms</label><input id="rfqPayTerms" placeholder="e.g. Net 30"></div>
+/* ============ NEW RFQ ============ */
+async function renderNewRfq(){
+  app.innerHTML='<div class="loader">Loading…</div>';
+  const comps=(await listRec(T.Comp.id)).list||[];
+  const nm=pv(T.Comp).title;
+  const stCol=col(T.RFQ,'status');
+  const stOpts=(stCol?.colOptions?.options||[]).map(o=>`<option>${esc(o.title)}</option>`).join('');
+  const curCol=col(T.RFQ,'currency');
+  const curOpts=(curCol?.colOptions?.options||[]).map(o=>`<option>${esc(o.title)}</option>`).join('')||'<option>EUR</option><option>USD</option>';
+  app.innerHTML=`
+  <div class="card">
+    <h2>New Quotation</h2>
+    <div class="g2">
+      <div><label>Client</label>
+        <div class="acbox"><input id="rC" placeholder="Type company name…" autocomplete="off"><div id="rCL" class="aclist" style="display:none"></div></div>
+        <input type="hidden" id="rCid">
       </div>
-      <label>Notes</label><textarea id="rfqNotes"></textarea>
-      <button class="primary" onclick="createRfqStep1()">Create RFQ & Add Items →</button>
-      <div id="newRfqMsg"></div>
+      <div><label>Project Name</label><input id="rProj" placeholder="e.g. Al-Baayda WWTP – Libya"></div>
+      <div><label>Contact Person</label><select id="rCont"><option value="">— select client first —</option></select></div>
+      <div><label>Salesperson</label><input id="rSales"></div>
+      <div><label>Currency</label><select id="rCur">${curOpts}</select></div>
+      <div><label>Status</label><select id="rSt">${stOpts}</select></div>
+      <div><label>Payment Terms</label><input id="rPay" placeholder="50% Down payment – 50% against shipping documents"></div>
+      <div><label>Delivery Method</label><input id="rDel" placeholder="Ex-Works Istanbul or Bursa warehouses"></div>
     </div>
-  `;
-  const companyList = companies.list || [];
-  document.getElementById('rfqCompanySearch').addEventListener('input', function() {
-    const q = this.value.toLowerCase();
-    const box = document.getElementById('rfqCompanyList');
-    if (!q) { box.style.display='none'; return; }
-    const matches = companyList.filter(c => (c[nameCol.title]||'').toLowerCase().includes(q)).slice(0,10);
-    box.innerHTML = matches.map(c => `<div class="ac-item" onclick="selectRfqCompany(${c.Id}, '${(c[nameCol.title]||'').replace(/'/g,"\\'")}')">${c[nameCol.title]}</div>`).join('');
-    box.style.display = matches.length ? 'block' : 'none';
+    <label>Internal Notes</label><textarea id="rNotes"></textarea>
+    <div class="btnrow"><button class="primary" onclick="createRfq()">Create & Add Items →</button></div>
+    <div id="rMsg"></div>
+  </div>`;
+  document.getElementById('rC').addEventListener('input',function(){
+    const q=this.value.toLowerCase(),box=document.getElementById('rCL');
+    if(!q){box.style.display='none';return}
+    const hits=comps.filter(c=>String(c[nm]||'').toLowerCase().includes(q)).slice(0,10);
+    box.innerHTML=hits.map(c=>`<div class="acitem" onclick="pickCompany(${c.Id},'${esc(c[nm]).replace(/'/g,"\\'")}')">${esc(c[nm])}</div>`).join('');
+    box.style.display=hits.length?'block':'none';
   });
 }
-function selectRfqCompany(id, name) {
-  document.getElementById('rfqCompanyId').value = id;
-  document.getElementById('rfqCompanySearch').value = name;
-  document.getElementById('rfqCompanyList').style.display = 'none';
+async function pickCompany(id,name){
+  document.getElementById('rCid').value=id;
+  document.getElementById('rC').value=name;
+  document.getElementById('rCL').style.display='none';
+  const contacts=await childrenOf(T.Cont,['company'],id);
+  const cN=pv(T.Cont).title;
+  document.getElementById('rCont').innerHTML='<option value="">— none —</option>'+contacts.map(c=>`<option value="${c.Id}">${esc(c[cN])}</option>`).join('');
 }
-async function createRfqStep1() {
-  const msg = document.getElementById('newRfqMsg');
-  const companyId = document.getElementById('rfqCompanyId').value;
-  const dealName = document.getElementById('rfqDealName').value.trim();
-  if (!companyId) { msg.innerHTML = '<div class="err">Select a company first.</div>'; return; }
-  if (!dealName) { msg.innerHTML = '<div class="err">Deal name required.</div>'; return; }
-  try {
-    const dealCol = primaryCol(T.RFQs);
-    const statusCol = findCol(T.RFQs, ['status']);
-    const payCol = findCol(T.RFQs, ['payment terms']);
-    const notesCol = findCol(T.RFQs, ['notes']);
-    const companyLinkCol = findCol(T.RFQs, ['company']);
-    const fields = { [dealCol.title]: dealName };
-    if (statusCol) fields[statusCol.title] = document.getElementById('rfqStatus').value;
-    if (payCol) fields[payCol.title] = document.getElementById('rfqPayTerms').value;
-    if (notesCol) fields[notesCol.title] = document.getElementById('rfqNotes').value;
-    const rfqRec = await createRecord(T.RFQs.id, fields);
-    if (companyLinkCol) await linkRecords(T.RFQs.id, companyLinkCol.id, rfqRec.Id, [parseInt(companyId)]);
-    // create first revision R0
-    await createRevisionForRfq(rfqRec.Id, []);
-    openRfq(rfqRec.Id);
-  } catch(e) { msg.innerHTML = `<div class="err">${e.message}</div>`; }
+async function createRfq(){
+  const m=document.getElementById('rMsg');
+  const cid=document.getElementById('rCid').value;
+  const proj=document.getElementById('rProj').value.trim();
+  if(!cid){m.innerHTML='<div class="err">Select a client.</div>';return}
+  if(!proj){m.innerHTML='<div class="err">Project name required.</div>';return}
+  const btn=event?.target; if(btn)btn.disabled=true;
+  try{
+    const f={};
+    f[pv(T.RFQ).title]=proj;
+    const set=(k,v)=>{const c=cn(T.RFQ,k);if(c)f[c]=v};
+    set('project',proj);set('salesperson',document.getElementById('rSales').value);
+    set('currency',document.getElementById('rCur').value);
+    set('status',document.getElementById('rSt').value);
+    set('payment terms',document.getElementById('rPay').value);
+    set('delivery method',document.getElementById('rDel').value);
+    set('notes',document.getElementById('rNotes').value);
+    const rec=await createRec(T.RFQ.id,f);
+    const cl=col(T.RFQ,'company');
+    if(cl)await link(T.RFQ.id,cl.id,rec.Id,[parseInt(cid)]);
+    const contId=document.getElementById('rCont').value;
+    const ctl=col(T.RFQ,'contact person','contactperson');
+    if(contId&&ctl)await link(T.RFQ.id,ctl.id,rec.Id,[parseInt(contId)]);
+    await newRevision(rec.Id,[]);
+    openRfq(rec.Id);
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`;if(btn)btn.disabled=false}
 }
 
-async function createRevisionForRfq(rfqId, copyItems) {
-  const revNameCol = primaryCol(T.Revisions);
-  const parentCol = findCol(T.Revisions, ['parent']);
-  const dateCol = findCol(T.Revisions, ['revision date','date']);
-  const shipCol = findCol(T.Revisions, ['shipping']);
-  const kdvCol = findCol(T.Revisions, ['kdv']);
-  const validCol = findCol(T.Revisions, ['validity']);
-
-  // count existing revisions for numbering
-  const revLinkCol = findCol(T.RFQs, ['revisions']);
-  let count = 0;
-  if (revLinkCol) {
-    const existing = await listLinked(T.RFQs.id, revLinkCol.id, rfqId);
-    count = (existing.list||[]).length;
+/* ============ REVISIONS ============ */
+async function newRevision(rfqId,items){
+  const existing=await childrenOf(T.Rev,['parent'],rfqId);
+  const n=existing.length;
+  const f={[pv(T.Rev).title]:'R'+n};
+  const d=cn(T.Rev,'revision date','date'),v=cn(T.Rev,'validity');
+  if(d)f[d]=today();
+  if(v)f[v]=addDays(today(),30);
+  const rec=await createRec(T.Rev.id,f);
+  const pl=col(T.Rev,'parent');
+  if(pl)await link(T.Rev.id,pl.id,rec.Id,[rfqId]);
+  if(items&&items.length)await writeItems(rec.Id,items);
+  return rec.Id;
+}
+async function writeItems(revId,items){
+  const nameC=pv(T.Item).title,qC=cn(T.Item,'quantity'),pC=cn(T.Item,'unit price'),
+        dC=cn(T.Item,'description'),delC=cn(T.Item,'delivery'),lC=cn(T.Item,'line no','lineno');
+  const rl=col(T.Item,'revision'),pl=col(T.Item,'product');
+  for(let i=0;i<items.length;i++){
+    const it=items[i],f={};
+    f[nameC]=it.name||'';
+    if(qC)f[qC]=it.qty||0;
+    if(pC)f[pC]=it.price||0;
+    if(dC)f[dC]=it.desc||'';
+    if(delC)f[delC]=it.delivery||'';
+    if(lC)f[lC]=i+1;
+    const rec=await createRec(T.Item.id,f);
+    if(rl)await link(T.Item.id,rl.id,rec.Id,[revId]);
+    if(pl&&it.productId)await link(T.Item.id,pl.id,rec.Id,[it.productId]);
   }
-  const fields = { [revNameCol.title]: `R${count}` };
-  if (dateCol) fields[dateCol.title] = new Date().toISOString().slice(0,10);
-  if (shipCol) fields[shipCol.title] = 0;
-  if (kdvCol) fields[kdvCol.title] = 18;
-  const revRec = await createRecord(T.Revisions.id, fields);
-  if (parentCol) await linkRecords(T.Revisions.id, parentCol.id, revRec.Id, [rfqId]);
-
-  if (copyItems && copyItems.length) {
-    const itemNameCol = primaryCol(T.Items);
-    const revItemLinkCol = findCol(T.Items, ['revision']);
-    const prodLinkCol = findCol(T.Items, ['product']);
-    const qtyCol = findCol(T.Items, ['quantity']);
-    const priceCol = findCol(T.Items, ['unit price']);
-    for (const it of copyItems) {
-      const f = { [itemNameCol.title]: it.name };
-      if (qtyCol) f[qtyCol.title] = it.qty;
-      if (priceCol) f[priceCol.title] = it.price;
-      const rec = await createRecord(T.Items.id, f);
-      if (revItemLinkCol) await linkRecords(T.Items.id, revItemLinkCol.id, rec.Id, [revRec.Id]);
-      if (prodLinkCol && it.productId) await linkRecords(T.Items.id, prodLinkCol.id, rec.Id, [it.productId]);
-    }
-  }
-  return revRec.Id;
 }
 
-/* ================= OPEN RFQ (view/edit/print) ================= */
-async function openRfq(rfqId) {
-  app.innerHTML = `<div class="loader">Loading RFQ...</div>`;
-  const dealCol = primaryCol(T.RFQs);
-  const rfqNumCol = findCol(T.RFQs, ['rfq number']);
-  const statusCol = findCol(T.RFQs, ['status']);
-  const payCol = findCol(T.RFQs, ['payment terms']);
-  const notesCol = findCol(T.RFQs, ['notes']);
-  const companyLinkCol = findCol(T.RFQs, ['company']);
-  const revLinkCol = findCol(T.RFQs, ['revisions']);
+/* ============ OPEN RFQ ============ */
+let CUR={rfqId:null,revId:null,rows:[],currency:'EUR'};
 
-  const rfq = await ncFetch(`/tables/${T.RFQs.id}/records/${rfqId}`);
-  const companyId = getLinkedId(rfq, companyLinkCol?.title);
-  let company = null;
-  if (companyId) company = await ncFetch(`/tables/${T.Companies.id}/records/${companyId}`);
-  const companyNameCol = primaryCol(T.Companies);
-
-  const revisions = revLinkCol ? await listLinked(T.RFQs.id, revLinkCol.id, rfqId) : { list: [] };
-  let revRows = [];
-  for (const r of (revisions.list||[])) {
-    try { revRows.push(await ncFetch(`/tables/${T.Revisions.id}/records/${r.Id}`)); } catch(e){}
-  }
-  const revNameCol = primaryCol(T.Revisions);
-  revRows.sort((a,b)=> (a[revNameCol.title]||'').localeCompare(b[revNameCol.title]||''));
-  const latestRev = revRows[revRows.length-1];
-
-  const statusOptions = (statusCol?.colOptions?.options||[]).map(o => `<option value="${o.title}" ${rfq[statusCol.title]===o.title?'selected':''}>${o.title}</option>`).join('');
-
-  app.innerHTML = `
-    <div class="card">
-      <h2>${rfq[rfqNumCol?.title]||''} — ${rfq[dealCol.title]||''}</h2>
-      <p><strong>Company:</strong> ${company ? company[companyNameCol.title] : '-'}</p>
-      <div class="grid2">
-        <div><label>Status</label><select id="rfqStatusEdit" onchange="changeRfqStatus(${rfqId}, this.value)">${statusOptions}</select></div>
-        <div><label>Payment Terms</label><input id="rfqPayEdit" value="${rfq[payCol?.title]||''}" onchange="updateRfqField(${rfqId}, '${payCol?.title}', this.value)"></div>
-      </div>
-      <label>Notes</label>
-      <textarea id="rfqNotesEdit" onchange="updateRfqField(${rfqId}, '${notesCol?.title}', this.value)">${rfq[notesCol?.title]||''}</textarea>
-    </div>
-
-    <div class="card">
-      <h2>Revisions</h2>
-      <p>${revRows.map(r => r[revNameCol.title]).join(' → ') || 'None yet'}</p>
-      <button class="secondary small" onclick="startNewRevision(${rfqId})">+ New Revision (copy latest items)</button>
-    </div>
-
-    <div class="card" id="itemsCard">
-      <h2>Items — Current Revision: ${latestRev ? latestRev[revNameCol.title] : 'none'}</h2>
-      <div id="itemsArea"><div class="loader">Loading items...</div></div>
-    </div>
-
-    <button class="primary" onclick="printRfqPdf(${rfqId})">🖨 Print Quotation PDF</button>
-    <button class="secondary" onclick="VIEW='search';route()">← Back</button>
-  `;
-
-  if (latestRev) renderItemsForRevision(rfqId, latestRev.Id);
-  else document.getElementById('itemsArea').innerHTML = '<div class="warn">No revision yet.</div>';
-}
-
-async function updateRfqField(rfqId, fieldTitle, value) {
-  if (!fieldTitle || fieldTitle==='undefined') return;
-  await updateRecord(T.RFQs.id, rfqId, { [fieldTitle]: value });
-}
-async function changeRfqStatus(rfqId, value) {
-  const statusCol = findCol(T.RFQs, ['status']);
-  await updateRecord(T.RFQs.id, rfqId, { [statusCol.title]: value });
-}
-
-async function startNewRevision(rfqId) {
-  const revLinkCol = findCol(T.RFQs, ['revisions']);
-  const revisions = await listLinked(T.RFQs.id, revLinkCol.id, rfqId);
-  const revNameCol = primaryCol(T.Revisions);
-  let latest = null, latestFull=[];
-  for (const r of (revisions.list||[])) latestFull.push(await ncFetch(`/tables/${T.Revisions.id}/records/${r.Id}`));
-  latestFull.sort((a,b)=> (a[revNameCol.title]||'').localeCompare(b[revNameCol.title]||''));
-  latest = latestFull[latestFull.length-1];
-
-  let copyItems = [];
-  if (latest) {
-    const itemLinkCol = findCol(T.Revisions, ['items']);
-    const itemsResp = itemLinkCol ? await listLinked(T.Revisions.id, itemLinkCol.id, latest.Id) : {list:[]};
-    const itemNameCol = primaryCol(T.Items);
-    const qtyCol = findCol(T.Items, ['quantity']);
-    const priceCol = findCol(T.Items, ['unit price']);
-    const prodLinkCol = findCol(T.Items, ['product']);
-    for (const it of (itemsResp.list||[])) {
-      const full = await ncFetch(`/tables/${T.Items.id}/records/${it.Id}`);
-      copyItems.push({
-        name: full[itemNameCol.title],
-        qty: full[qtyCol?.title]||1,
-        price: full[priceCol?.title]||0,
-        productId: getLinkedId(full, prodLinkCol?.title)
-      });
-    }
-  }
-  await createRevisionForRfq(rfqId, copyItems);
-  openRfq(rfqId);
-}
-
-async function renderItemsForRevision(rfqId, revisionId) {
-  const itemLinkCol = findCol(T.Revisions, ['items']);
-  const itemsResp = itemLinkCol ? await listLinked(T.Revisions.id, itemLinkCol.id, revisionId) : {list:[]};
-  const itemNameCol = primaryCol(T.Items);
-  const qtyCol = findCol(T.Items, ['quantity']);
-  const priceCol = findCol(T.Items, ['unit price']);
-  const subtotalCol = findCol(T.Items, ['subtot']);
-  const costCol = findCol(T.Items, ['cost price']);
-  const profitCol = findCol(T.Items, ['profit']);
-  const marginCol = findCol(T.Items, ['margin']);
-  const prodLinkCol = findCol(T.Items, ['product']);
-
-  let items = [];
-  for (const it of (itemsResp.list||[])) {
-    items.push(await ncFetch(`/tables/${T.Items.id}/records/${it.Id}`));
-  }
-
-  const shipCol = findCol(T.Revisions, ['shipping']);
-  const kdvCol = findCol(T.Revisions, ['kdv']);
-  const rev = await ncFetch(`/tables/${T.Revisions.id}/records/${revisionId}`);
-
-  let totalCost=0, totalPrice=0;
-  items.forEach(it => {
-    totalCost += (it[qtyCol?.title]||0) * (it[costCol?.title]||0);
-    totalPrice += it[subtotalCol?.title] || ((it[qtyCol?.title]||0)*(it[priceCol?.title]||0));
+async function openRfq(rfqId,revId){
+  app.innerHTML='<div class="loader">Loading quotation…</div>';
+  const rfq=await getRec(T.RFQ.id,rfqId);
+  const compId=linkedId(rfq,cn(T.RFQ,'company'));
+  const comp=compId?await getRec(T.Comp.id,compId):null;
+  const revs=(await childrenOf(T.Rev,['parent'],rfqId)).sort((a,b)=>{
+    const n=x=>parseInt(String(x[pv(T.Rev).title]||'').replace(/\D/g,''))||0;
+    return n(a)-n(b);
   });
-  const profit = totalPrice - totalCost;
-  const margin = totalPrice ? (profit/totalPrice*100).toFixed(2) : 0;
-  const shipping = rev[shipCol?.title]||0;
-  const kdv = rev[kdvCol?.title]||0;
-  const subtotalWithShip = totalPrice + parseFloat(shipping||0);
-  const kdvAmt = subtotalWithShip * (kdv/100);
-  const grandTotal = subtotalWithShip + kdvAmt;
+  const cur=revId? revs.find(r=>r.Id===revId) : revs[revs.length-1];
+  if(!cur){app.innerHTML='<div class="card err">No revision found.</div>';return}
 
-  const area = document.getElementById('itemsArea');
-  area.innerHTML = `
-    <div class="item-row header-row"><div>Product</div><div>Qty</div><div>Cost</div><div>Unit Price</div><div>Subtotal</div><div>Margin%</div><div></div></div>
-    ${items.map(it => `<div class="item-row">
-      <div>${it[itemNameCol.title]||''}</div>
-      <div>${it[qtyCol?.title]||''}</div>
-      <div>${(it[costCol?.title]||0).toFixed?.(2)||it[costCol?.title]}</div>
-      <div>${it[priceCol?.title]||''}</div>
-      <div>${(it[subtotalCol?.title]||0)}</div>
-      <div>${it[marginCol?.title]||''}</div>
-      <div></div>
-    </div>`).join('')}
-    <div class="totals-box">
-      <div><div class="label">Total Cost</div><div class="value">${totalCost.toFixed(2)}</div></div>
-      <div><div class="label">Total Price</div><div class="value">${totalPrice.toFixed(2)}</div></div>
-      <div><div class="label">Profit</div><div class="value">${profit.toFixed(2)}</div></div>
-      <div><div class="label">Margin</div><div class="value">${margin}%</div></div>
-      <div><div class="label">Shipping</div><div class="value">${shipping}</div></div>
-      <div><div class="label">KDV %</div><div class="value">${kdv}%</div></div>
-      <div><div class="label">GRAND TOTAL</div><div class="value">${grandTotal.toFixed(2)}</div></div>
+  const items=(await childrenOf(T.Item,['revision'],cur.Id)).sort((a,b)=>(a[cn(T.Item,'line no','lineno')]||0)-(b[cn(T.Item,'line no','lineno')]||0));
+  const currency=rfq[cn(T.RFQ,'currency')]||'EUR';
+  CUR={rfqId,revId:cur.Id,currency,rows:items.map(i=>({
+    id:i.Id,
+    name:i[pv(T.Item).title]||'',
+    desc:i[cn(T.Item,'description')]||'',
+    delivery:i[cn(T.Item,'delivery')]||'',
+    qty:i[cn(T.Item,'quantity')]||0,
+    price:i[cn(T.Item,'unit price')]||0,
+    cost:i[cn(T.Item,'cost price')]||0,
+    productId:linkedId(i,cn(T.Item,'product'))
+  }))};
+
+  const rNum=rfq[cn(T.RFQ,'rfq number','quotation number')]||'';
+  const revName=cur[pv(T.Rev).title]||'';
+  const stCol=col(T.RFQ,'status');
+  const stOpts=(stCol?.colOptions?.options||[]).map(o=>`<option ${rfq[stCol.title]===o.title?'selected':''}>${esc(o.title)}</option>`).join('');
+
+  app.innerHTML=`
+  <div class="card">
+    <h2>${esc(rNum)}-${esc(revName)}</h2>
+    <p class="muted">${comp?esc(comp[pv(T.Comp).title]):''} · ${esc(rfq[cn(T.RFQ,'project')]||'')}</p>
+    <div class="g4">
+      <div><label>Status</label><select onchange="setRfq('status',this.value)">${stOpts}</select></div>
+      <div><label>Salesperson</label><input value="${esc(rfq[cn(T.RFQ,'salesperson')]||'')}" onchange="setRfq('salesperson',this.value)"></div>
+      <div><label>Quotation Date</label><input type="date" value="${(cur[cn(T.Rev,'revision date','date')]||'').slice(0,10)}" onchange="setRev('revision date',this.value)"></div>
+      <div><label>Expiration</label><input type="date" value="${(cur[cn(T.Rev,'validity')]||'').slice(0,10)}" onchange="setRev('validity',this.value)"></div>
+      <div><label>Payment Terms</label><input value="${esc(rfq[cn(T.RFQ,'payment terms')]||'')}" onchange="setRfq('payment terms',this.value)"></div>
+      <div><label>Delivery Method</label><input value="${esc(rfq[cn(T.RFQ,'delivery method')]||'')}" onchange="setRfq('delivery method',this.value)"></div>
+      <div><label>Currency</label><input value="${esc(currency)}" disabled></div>
     </div>
+  </div>
 
-    <h3 style="margin-top:20px;">Add Item</h3>
-    <div class="autocomplete-box">
-      <input id="itemProdSearch" placeholder="Search product...">
-      <div id="itemProdList" class="ac-list" style="display:none;"></div>
+  <div class="card">
+    <h2>Revisions</h2>
+    ${revs.map(r=>`<span class="rev-chip ${r.Id===cur.Id?'cur':''}" onclick="openRfq(${rfqId},${r.Id})">${esc(r[pv(T.Rev).title])}</span>`).join('')}
+    <p class="muted" style="margin-top:8px">Editing <b>${esc(revName)}</b>. Use “Save as New Revision” to keep this version and start the next one.</p>
+  </div>
+
+  <div class="card">
+    <h2>Items</h2>
+    <div class="acbox" style="max-width:520px">
+      <input id="addProd" placeholder="Search catalogue to add a line…" autocomplete="off">
+      <div id="addProdList" class="aclist" style="display:none"></div>
     </div>
-    <div class="grid3" style="margin-top:8px;">
-      <div><label>Quantity</label><input id="itemQty" type="number" value="1"></div>
-      <div><label>Unit Price</label><input id="itemPrice" type="number" step="0.01"></div>
-      <div><label>Shipping (revision)</label><input id="itemShip" type="number" value="${shipping}" onchange="updateRevisionField(${revisionId}, '${shipCol?.title}', this.value)"></div>
+    <div class="btnrow" style="margin-top:8px"><button class="ghost" onclick="addBlankRow()">+ Blank line</button></div>
+    <div id="grid" style="margin-top:12px"></div>
+    <div id="totals"></div>
+    <div class="btnrow">
+      <button class="primary" onclick="saveItems(false)">💾 Save</button>
+      <button class="dark" onclick="saveItems(true)">📄 Save as New Revision</button>
+      <button class="ghost" onclick="printQuotation()">🖨 Print PDF</button>
+      <button class="ghost" onclick="VIEW='search';route()">← Back</button>
     </div>
-    <label>KDV % (revision)</label><input id="itemKdv" type="number" value="${kdv}" onchange="updateRevisionField(${revisionId}, '${kdvCol?.title}', this.value)">
-    <input type="hidden" id="selectedProductId">
-    <input type="hidden" id="selectedProductName">
-    <input type="hidden" id="selectedProductCost">
-    <button class="primary" onclick="addItemToRevision(${revisionId}, ${rfqId})">Add Item</button>
-    <div id="itemMsg"></div>
-  `;
+    <div id="saveMsg"></div>
+  </div>`;
 
-  document.getElementById('itemProdSearch').addEventListener('input', debounce(async function() {
-    const q = this.value.trim();
-    const list = document.getElementById('itemProdList');
-    if (!q) { list.style.display='none'; return; }
-    const resp = await listRecords(T.Products.id, { limit: 200 });
-    const nameCol = findCol(T.Products,['name']) || primaryCol(T.Products);
-    const skuCol = primaryCol(T.Products);
-    const costCol2 = findCol(T.Products, ['cost']);
-    const matches = (resp.list||[]).filter(p => (p[nameCol.title]||'').toLowerCase().includes(q.toLowerCase()) || (p[skuCol.title]||'').toLowerCase().includes(q.toLowerCase())).slice(0,10);
-    list.innerHTML = matches.map(p => `<div class="ac-item" onclick='selectItemProduct(${p.Id}, ${JSON.stringify(p[nameCol.title]||"")}, ${p[costCol2?.title]||0})'>${p[nameCol.title]} (${p[skuCol.title]}) - Cost ${p[costCol2?.title]}</div>`).join('');
-    list.style.display = matches.length?'block':'none';
-  }, 300));
+  drawGrid();
+  document.getElementById('addProd').addEventListener('input',debounce(async function(){
+    const q=this.value.trim(),box=document.getElementById('addProdList');
+    if(!q){box.style.display='none';return}
+    const prods=(await listRec(T.Prod.id,{limit:2000})).list||[];
+    const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost');
+    const hits=prods.filter(p=>[p[sku],p[pn]].some(v=>String(v||'').toLowerCase().includes(q.toLowerCase()))).slice(0,10);
+    box.innerHTML=hits.map(p=>`<div class="acitem" onclick="addFromProduct(${p.Id})"><b>${esc(p[pn]||p[sku])}</b> <span class="muted">${esc(p[sku])} · cost ${fmt(p[cost])}</span></div>`).join('');
+    box.style.display=hits.length?'block':'none';
+  },300));
 }
 
-function selectItemProduct(id, name, cost) {
-  document.getElementById('selectedProductId').value = id;
-  document.getElementById('selectedProductName').value = name;
-  document.getElementById('selectedProductCost').value = cost;
-  document.getElementById('itemProdSearch').value = name;
-  document.getElementById('itemProdList').style.display = 'none';
-  document.getElementById('itemPrice').value = cost;
+async function setRfq(kw,val){
+  const c=cn(T.RFQ,kw);
+  if(c)await updateRec(T.RFQ.id,CUR.rfqId,{[c]:val});
 }
-async function updateRevisionField(revisionId, fieldTitle, value) {
-  if (!fieldTitle || fieldTitle==='undefined') return;
-  await updateRecord(T.Revisions.id, revisionId, { [fieldTitle]: parseFloat(value)||0 });
-}
-async function addItemToRevision(revisionId, rfqId) {
-  const msg = document.getElementById('itemMsg');
-  const prodId = document.getElementById('selectedProductId').value;
-  const prodName = document.getElementById('selectedProductName').value;
-  const qty = parseFloat(document.getElementById('itemQty').value)||1;
-  const price = parseFloat(document.getElementById('itemPrice').value)||0;
-  if (!prodId) { msg.innerHTML = '<div class="err">Select a product first.</div>'; return; }
-  try {
-    const itemNameCol = primaryCol(T.Items);
-    const qtyCol = findCol(T.Items, ['quantity']);
-    const priceCol = findCol(T.Items, ['unit price']);
-    const revLinkCol = findCol(T.Items, ['revision']);
-    const prodLinkCol = findCol(T.Items, ['product']);
-    const fields = { [itemNameCol.title]: prodName };
-    if (qtyCol) fields[qtyCol.title] = qty;
-    if (priceCol) fields[priceCol.title] = price;
-    const rec = await createRecord(T.Items.id, fields);
-    if (revLinkCol) await linkRecords(T.Items.id, revLinkCol.id, rec.Id, [revisionId]);
-    if (prodLinkCol) await linkRecords(T.Items.id, prodLinkCol.id, rec.Id, [parseInt(prodId)]);
-    renderItemsForRevision(rfqId, revisionId);
-  } catch(e) { msg.innerHTML = `<div class="err">${e.message}</div>`; }
+async function setRev(kw,val){
+  const c=cn(T.Rev,kw,'date');
+  if(c)await updateRec(T.Rev.id,CUR.revId,{[c]:val||null});
 }
 
-/* ================= PDF PRINTING ================= */
-async function printRfqPdf(rfqId) {
-  const dealCol = primaryCol(T.RFQs);
-  const rfqNumCol = findCol(T.RFQs, ['rfq number']);
-  const companyLinkCol = findCol(T.RFQs, ['company']);
-  const payCol = findCol(T.RFQs, ['payment terms']);
-  const revLinkCol = findCol(T.RFQs, ['revisions']);
+async function addFromProduct(pid){
+  const p=await getRec(T.Prod.id,pid);
+  CUR.rows.push({
+    id:null,
+    name:p[cn(T.Prod,'name')]||p[pv(T.Prod).title]||'',
+    desc:p[cn(T.Prod,'specification')]||'',
+    delivery:'',
+    qty:1,
+    price:p[cn(T.Prod,'cost')]||0,
+    cost:p[cn(T.Prod,'cost')]||0,
+    productId:pid
+  });
+  document.getElementById('addProd').value='';
+  document.getElementById('addProdList').style.display='none';
+  drawGrid();
+}
+function addBlankRow(){
+  CUR.rows.push({id:null,name:'',desc:'',delivery:'',qty:1,price:0,cost:0,productId:null});
+  drawGrid();
+}
+function delRow(i){CUR.rows.splice(i,1);drawGrid()}
+function moveRow(i,d){
+  const j=i+d;
+  if(j<0||j>=CUR.rows.length)return;
+  [CUR.rows[i],CUR.rows[j]]=[CUR.rows[j],CUR.rows[i]];
+  drawGrid();
+}
+function setCell(i,k,v){
+  CUR.rows[i][k]=(k==='qty'||k==='price')? (parseFloat(v)||0) : v;
+  if(k==='qty'||k==='price')drawTotals();
+}
+function drawGrid(){
+  const g=document.getElementById('grid');
+  if(!CUR.rows.length){g.innerHTML='<div class="warn">No items yet. Search the catalogue above or add a blank line.</div>';drawTotals();return}
+  g.innerHTML=`<table class="itemgrid">
+  <tr><th style="width:26px">#</th><th style="width:22%">Item</th><th>Description / Specification</th><th style="width:88px">Delivery</th><th style="width:70px">Qty</th><th style="width:92px">Unit Price</th><th style="width:96px">Amount</th><th style="width:74px"></th></tr>
+  ${CUR.rows.map((r,i)=>`<tr>
+    <td>${i+1}</td>
+    <td><input value="${esc(r.name)}" onchange="setCell(${i},'name',this.value)"></td>
+    <td><textarea onchange="setCell(${i},'desc',this.value)">${esc(r.desc)}</textarea></td>
+    <td><input value="${esc(r.delivery)}" onchange="setCell(${i},'delivery',this.value)"></td>
+    <td><input type="number" step="any" value="${r.qty}" onchange="setCell(${i},'qty',this.value)"></td>
+    <td><input type="number" step="0.01" value="${r.price}" onchange="setCell(${i},'price',this.value)"></td>
+    <td style="text-align:right;padding-top:12px"><b>${fmt(r.qty*r.price)}</b></td>
+    <td><button class="sm" onclick="moveRow(${i},-1)">↑</button> <button class="sm" onclick="moveRow(${i},1)">↓</button><br>
+        <button class="danger" style="margin-top:4px" onclick="delRow(${i})">✕</button></td>
+  </tr>`).join('')}</table>`;
+  drawTotals();
+}
+function drawTotals(){
+  let total=0,cost=0;
+  CUR.rows.forEach(r=>{total+=r.qty*r.price;cost+=r.qty*(r.cost||0)});
+  const profit=total-cost,margin=total?(profit/total*100):0;
+  document.getElementById('totals').innerHTML=`<div class="totrow">
+    <div class="b"><div class="l">Lines</div><div class="v">${CUR.rows.length}</div></div>
+    <div class="b"><div class="l">Cost</div><div class="v">${fmt(cost)}</div></div>
+    <div class="b"><div class="l">Profit</div><div class="v ${profit>=0?'pos':'neg'}">${fmt(profit)}</div></div>
+    <div class="b"><div class="l">Margin</div><div class="v ${profit>=0?'pos':'neg'}">${margin.toFixed(1)}%</div></div>
+    <div class="b" style="background:#1c1c1c;color:#fff"><div class="l" style="color:#bbb">Total (${esc(CUR.currency)})</div><div class="v">${fmt(total)}</div></div>
+  </div>`;
+}
 
-  const rfq = await ncFetch(`/tables/${T.RFQs.id}/records/${rfqId}`);
-  const companyId = getLinkedId(rfq, companyLinkCol?.title);
-  const company = companyId ? await ncFetch(`/tables/${T.Companies.id}/records/${companyId}`) : {};
-  const companyNameCol = primaryCol(T.Companies);
-  const addrCol = findCol(T.Companies, ['address']);
-  const phoneCol = findCol(T.Companies, ['phone']);
-  const emailCol = findCol(T.Companies, ['email']);
+async function saveItems(asNew){
+  const m=document.getElementById('saveMsg');
+  m.innerHTML='<div class="loader">Saving…</div>';
+  try{
+    if(asNew){
+      await newRevision(CUR.rfqId,CUR.rows);
+      m.innerHTML='<div class="ok">New revision created.</div>';
+      openRfq(CUR.rfqId);
+      return;
+    }
+    const existing=await childrenOf(T.Item,['revision'],CUR.revId);
+    for(const e of existing)await deleteRec(T.Item.id,e.Id);
+    await writeItems(CUR.revId,CUR.rows);
+    m.innerHTML='<div class="ok">Saved.</div>';
+    openRfq(CUR.rfqId,CUR.revId);
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
+}
 
-  const revisions = revLinkCol ? await listLinked(T.RFQs.id, revLinkCol.id, rfqId) : {list:[]};
-  const revNameCol = primaryCol(T.Revisions);
-  let revRows = [];
-  for (const r of (revisions.list||[])) revRows.push(await ncFetch(`/tables/${T.Revisions.id}/records/${r.Id}`));
-  revRows.sort((a,b)=>(a[revNameCol.title]||'').localeCompare(b[revNameCol.title]||''));
-  const rev = revRows[revRows.length-1];
-  if (!rev) { alert('No revision to print.'); return; }
+/* ============ SEARCH ============ */
+function renderSearch(){
+  app.innerHTML=`
+  <div class="card">
+    <h2>Search Quotations</h2>
+    <input id="qs" placeholder="Quotation number, project or client…">
+    <div id="qsr"></div>
+  </div>
+  <div class="card">
+    <h2>Search Products</h2>
+    <input id="ps" placeholder="Product name or SKU…">
+    <div id="psr"></div>
+  </div>`;
+  document.getElementById('qs').addEventListener('input',debounce(searchRfqs,350));
+  document.getElementById('ps').addEventListener('input',debounce(searchProds,350));
+}
+async function searchRfqs(){
+  const q=document.getElementById('qs').value.trim().toLowerCase(),box=document.getElementById('qsr');
+  if(!q){box.innerHTML='';return}
+  box.innerHTML='<div class="loader">Searching…</div>';
+  const rfqs=(await listRec(T.RFQ.id)).list||[];
+  const num=cn(T.RFQ,'rfq number','quotation number'),proj=cn(T.RFQ,'project'),st=cn(T.RFQ,'status'),cl=cn(T.RFQ,'company');
+  const hits=rfqs.filter(r=>[r[num],r[proj],r[pv(T.RFQ).title],linkedName(r,cl)].some(v=>String(v||'').toLowerCase().includes(q)));
+  box.innerHTML=hits.length?`<table><tr><th>Number</th><th>Project</th><th>Client</th><th>Status</th></tr>
+  ${hits.map(r=>`<tr class="clickrow" onclick="openRfq(${r.Id})"><td class="link"><b>${esc(r[num]||'')}</b></td><td>${esc(r[proj]||r[pv(T.RFQ).title]||'')}</td><td>${esc(linkedName(r,cl))}</td><td>${esc(r[st]||'')}</td></tr>`).join('')}</table>`
+  :'<div class="warn">No matches.</div>';
+}
+async function searchProds(){
+  const q=document.getElementById('ps').value.trim().toLowerCase(),box=document.getElementById('psr');
+  if(!q){box.innerHTML='';return}
+  box.innerHTML='<div class="loader">Searching…</div>';
+  const prods=(await listRec(T.Prod.id,{limit:2000})).list||[];
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),pd=cn(T.Prod,'price updated','priceupdated');
+  const hits=prods.filter(p=>[p[sku],p[pn]].some(v=>String(v||'').toLowerCase().includes(q)));
+  box.innerHTML=hits.length?`<table><tr><th>SKU</th><th>Name</th><th>Cost</th><th>Price date</th></tr>
+  ${hits.map(p=>`<tr class="clickrow" onclick="editProduct(${p.Id})"><td class="link"><b>${esc(p[sku]||'')}</b></td><td>${esc(p[pn]||'')}</td><td>${fmt(p[cost])}</td><td>${priceAge(p[pd])}</td></tr>`).join('')}</table>`
+  :'<div class="warn">No matches.</div>';
+}
 
-  const itemLinkCol = findCol(T.Revisions, ['items']);
-  const itemsResp = itemLinkCol ? await listLinked(T.Revisions.id, itemLinkCol.id, rev.Id) : {list:[]};
-  const itemNameCol = primaryCol(T.Items);
-  const qtyCol = findCol(T.Items, ['quantity']);
-  const priceCol = findCol(T.Items, ['unit price']);
-  const subtotalCol = findCol(T.Items, ['subtot']);
-  let items = [];
-  for (const it of (itemsResp.list||[])) items.push(await ncFetch(`/tables/${T.Items.id}/records/${it.Id}`));
+/* ============ PDF ============ */
+async function printQuotation(){
+  const rfq=await getRec(T.RFQ.id,CUR.rfqId);
+  const compId=linkedId(rfq,cn(T.RFQ,'company'));
+  const comp=compId?await getRec(T.Comp.id,compId):{};
+  const rev=await getRec(T.Rev.id,CUR.revId);
+  const cur=rfq[cn(T.RFQ,'currency')]||'EUR';
+  const sym=CURSYM[cur]||'';
+  const num=(rfq[cn(T.RFQ,'rfq number','quotation number')]||'')+'-'+(rev[pv(T.Rev).title]||'');
 
-  const shipCol = findCol(T.Revisions, ['shipping']);
-  const kdvCol = findCol(T.Revisions, ['kdv']);
-  const validCol = findCol(T.Revisions, ['validity']);
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4'});
+  const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
+  const L=14,R=W-14;
 
-  let totalPrice = 0;
-  items.forEach(it => totalPrice += (it[subtotalCol?.title] || ((it[qtyCol?.title]||0)*(it[priceCol?.title]||0))));
-  const shipping = parseFloat(rev[shipCol?.title]||0);
-  const kdv = parseFloat(rev[kdvCol?.title]||0);
-  const subtotalWithShip = totalPrice + shipping;
-  const kdvAmt = subtotalWithShip * (kdv/100);
-  const grandTotal = subtotalWithShip + kdvAmt;
+  function header(){
+    doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(30,30,30);
+    doc.text('MOMENT',L,16);
+    doc.setTextColor(245,166,35);doc.text('INDUSTRY',L+34,16);
+    doc.setTextColor(60,60,60);doc.setFont('helvetica','normal');doc.setFontSize(6.5);
+    doc.text(CO.legal,L,22);
+    doc.text('Address: '+CO.address,L,25);
+    doc.text('Tel: '+CO.tel,L,28);
+    doc.text('Email: '+CO.email,L,31);
+    doc.text('Website: '+CO.web,L,34);
+    doc.setDrawColor(180);doc.setLineWidth(.3);doc.line(L,36,R,36);
+  }
+  function footer(p,tot){
+    doc.setFontSize(7.5);doc.setTextColor(120);
+    doc.text(`Page: ${p} / ${tot}`,W/2,H-10,{align:'center'});
+  }
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const pw = doc.internal.pageSize.getWidth();
+  header();
+  doc.setTextColor(41,98,175);doc.setFont('helvetica','normal');doc.setFontSize(17);
+  doc.text('Quotation # '+num,L,48);
 
-  // Header
-  doc.setFontSize(16); doc.setFont(undefined,'bold');
-  doc.text(COMPANY_INFO.name, 14, 18);
-  doc.setFontSize(8); doc.setFont(undefined,'normal');
-  doc.text(COMPANY_INFO.address, 14, 24);
-  doc.text(`${COMPANY_INFO.phone} / ${COMPANY_INFO.mobile}`, 14, 29);
-  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.web}`, 14, 34);
+  doc.setTextColor(40);doc.setFontSize(9);
+  const clientName=comp[pv(T.Comp).title]||'';
+  doc.text(doc.splitTextToSize(clientName,80),W/2+4,46);
 
-  doc.setFontSize(14); doc.setFont(undefined,'bold');
-  doc.text('QUOTATION', pw-14, 18, {align:'right'});
-  doc.setFontSize(9); doc.setFont(undefined,'normal');
-  doc.text(`Ref: ${rfq[rfqNumCol?.title]||''}`, pw-14, 24, {align:'right'});
-  doc.text(`Revision: ${rev[revNameCol.title]}`, pw-14, 29, {align:'right'});
-  doc.text(`Date: ${new Date().toLocaleDateString()}`, pw-14, 34, {align:'right'});
-  if (validCol && rev[validCol.title]) doc.text(`Valid Until: ${rev[validCol.title]}`, pw-14, 39, {align:'right'});
+  doc.setFontSize(8.5);doc.setTextColor(41,98,175);
+  doc.text('Your Reference:',L,60);
+  doc.text('Quotation Date:',L+58,60);
+  doc.text('Expiration:',L+108,60);
+  doc.text('Salesperson:',L+148,60);
+  doc.setTextColor(40);
+  doc.text(String(rfq[cn(T.RFQ,'project')]||''),L,65);
+  doc.text(dmy(rev[cn(T.Rev,'revision date','date')]),L+58,65);
+  doc.text(dmy(rev[cn(T.Rev,'validity')]),L+108,65);
+  doc.text(String(rfq[cn(T.RFQ,'salesperson')]||''),L+148,65);
 
-  doc.setLineWidth(0.5); doc.line(14, 42, pw-14, 42);
-
-  doc.setFontSize(10); doc.setFont(undefined,'bold');
-  doc.text('To:', 14, 50);
-  doc.setFont(undefined,'normal');
-  doc.text(`${company[companyNameCol.title]||''}`, 14, 56);
-  doc.text(`${company[addrCol?.title]||''}`, 14, 61);
-  doc.text(`${company[phoneCol?.title]||''} ${company[emailCol?.title]||''}`, 14, 66);
-  if (payCol) doc.text(`Payment Terms: ${rfq[payCol.title]||''}`, 14, 71);
-
-  const tableBody = items.map(it => [
-    it[itemNameCol.title]||'',
-    it[qtyCol?.title]||'',
-    (it[priceCol?.title]||0).toFixed(2),
-    (it[subtotalCol?.title]||((it[qtyCol?.title]||0)*(it[priceCol?.title]||0))).toFixed(2)
-  ]);
+  const body=CUR.rows.map(r=>{
+    const desc=(r.name?r.name+'\n':'')+(r.desc||'');
+    return [desc,r.delivery||'',fmt(r.qty),fmt(r.price)+' '+sym,fmt(r.qty*r.price)+' '+sym];
+  });
+  let total=0;CUR.rows.forEach(r=>total+=r.qty*r.price);
 
   doc.autoTable({
-    head: [['Description','Qty','Unit Price','Total']],
-    body: tableBody,
-    startY: 78,
-    margin: {left:14, right:14},
-    theme: 'grid',
-    headStyles: { fillColor: [30,30,30] }
+    head:[['Description','Delivery','Quantity','Unit Price','Amount']],
+    body,
+    startY:72,
+    margin:{left:L,right:14,top:42},
+    theme:'grid',
+    styles:{fontSize:7.5,cellPadding:2,textColor:30,lineColor:[190,190,190],lineWidth:.2,valign:'top'},
+    headStyles:{fillColor:[255,255,255],textColor:[41,98,175],fontStyle:'normal',fontSize:8.5,lineColor:[150,150,150]},
+    columnStyles:{0:{cellWidth:88},1:{cellWidth:22,halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:26,halign:'right'},4:{cellWidth:28,halign:'right'}},
+    didDrawPage:()=>{header()}
   });
 
-  let y = doc.lastAutoTable.finalY + 8;
-  doc.setFontSize(9);
-  doc.text(`Subtotal: ${totalPrice.toFixed(2)}`, pw-14, y, {align:'right'}); y+=6;
-  doc.text(`Shipping: ${shipping.toFixed(2)}`, pw-14, y, {align:'right'}); y+=6;
-  doc.text(`KDV (${kdv}%): ${kdvAmt.toFixed(2)}`, pw-14, y, {align:'right'}); y+=8;
-  doc.setFontSize(12); doc.setFont(undefined,'bold');
-  doc.text(`TOTAL: ${grandTotal.toFixed(2)}`, pw-14, y, {align:'right'});
+  let y=doc.lastAutoTable.finalY;
+  doc.setFont('helvetica','bold');doc.setFontSize(11);
+  doc.setDrawColor(150);doc.rect(L,y,R-L,10);
+  doc.text('Total',R-58,y+6.5,{align:'right'});
+  doc.text(fmt(total)+' '+sym,R-3,y+6.5,{align:'right'});
 
   // Terms page
-  doc.addPage();
-  doc.setFontSize(9); doc.setFont(undefined,'normal');
-  const lines = doc.splitTextToSize(TERMS_TEXT, pw-28);
-  doc.text(lines, 14, 20);
+  doc.addPage();header();
+  doc.setTextColor(41,98,175);doc.setFont('helvetica','normal');doc.setFontSize(14);
+  doc.text('Terms & Conditions',L,48);
+  let ty=58;
+  const payTerms=rfq[cn(T.RFQ,'payment terms')]||'';
+  const delMethod=rfq[cn(T.RFQ,'delivery method')]||'';
+  TERMS.forEach(([head,txt])=>{
+    let bodyTxt=txt;
+    if(head==='Payment Terms:')bodyTxt=payTerms;
+    if(head==='Delivery Method:'&&delMethod)bodyTxt=delMethod;
+    if(!bodyTxt)return;
+    if(ty>H-40){doc.addPage();header();ty=48}
+    doc.setTextColor(41,98,175);doc.setFontSize(9);doc.setFont('helvetica','normal');
+    doc.text(head,L,ty);ty+=4.5;
+    doc.setTextColor(40);doc.setFontSize(7.8);
+    const lines=doc.splitTextToSize(bodyTxt,R-L);
+    lines.forEach(ln=>{
+      if(ty>H-16){doc.addPage();header();ty=48}
+      doc.text(ln,L,ty);ty+=3.6;
+    });
+    ty+=4;
+  });
 
-  doc.save(`${rfq[rfqNumCol?.title]||'RFQ'}-${rev[revNameCol.title]}.pdf`);
+  const tot=doc.internal.getNumberOfPages();
+  for(let i=1;i<=tot;i++){doc.setPage(i);footer(i,tot)}
+  doc.save(num+'.pdf');
 }
 
-/* ================= DASHBOARD ================= */
-async function renderDashboard() {
-  app.innerHTML = `<div class="loader">Crunching numbers...</div>`;
-  const itemsResp = await listRecords(T.Items.id, { limit: 5000 });
-  const items = itemsResp.list || [];
-  const qtyCol = findCol(T.Items, ['quantity']);
-  const costCol = findCol(T.Items, ['cost price']);
-  const subtotalCol = findCol(T.Items, ['subtot']);
-  const profitCol = findCol(T.Items, ['profit']);
+/* ============ DASHBOARD ============ */
+async function renderDashboard(){
+  app.innerHTML='<div class="loader">Crunching…</div>';
+  const [rfqR,itemR,revR]=await Promise.all([listRec(T.RFQ.id),listRec(T.Item.id,{limit:5000}),listRec(T.Rev.id,{limit:5000})]);
+  const rfqs=rfqR.list||[],items=itemR.list||[],revs=revR.list||[];
+  const qC=cn(T.Item,'quantity'),pC=cn(T.Item,'unit price'),cC=cn(T.Item,'cost price'),rl=cn(T.Item,'revision');
+  const parentC=cn(T.Rev,'parent');
 
-  let totalCost=0, totalPrice=0, totalProfit=0;
-  items.forEach(it => {
-    totalCost += (it[qtyCol?.title]||0) * (it[costCol?.title]||0);
-    totalPrice += it[subtotalCol?.title] || 0;
-    totalProfit += it[profitCol?.title] || 0;
+  const revToRfq={};revs.forEach(r=>revToRfq[r.Id]=linkedId(r,parentC));
+  const latestRev={};
+  revs.forEach(r=>{
+    const rq=revToRfq[r.Id];if(!rq)return;
+    const n=parseInt(String(r[pv(T.Rev).title]||'').replace(/\D/g,''))||0;
+    if(!latestRev[rq]||n>latestRev[rq].n)latestRev[rq]={id:r.Id,n};
   });
-  const avgMargin = totalPrice ? (totalProfit/totalPrice*100).toFixed(2) : 0;
+  const activeRevs=new Set(Object.values(latestRev).map(x=>x.id));
 
-  const rfqsResp = await listRecords(T.RFQs.id, { limit: 1000 });
-  const statusCol = findCol(T.RFQs, ['status']);
-  const statusCounts = {};
-  (rfqsResp.list||[]).forEach(r => {
-    const s = r[statusCol?.title]||'Unknown';
-    statusCounts[s] = (statusCounts[s]||0)+1;
+  let total=0,cost=0;
+  items.forEach(i=>{
+    const rid=linkedId(i,rl);
+    if(!activeRevs.has(rid))return;
+    total+=(i[qC]||0)*(i[pC]||0);
+    cost+=(i[qC]||0)*(i[cC]||0);
   });
+  const profit=total-cost,margin=total?(profit/total*100):0;
 
-  app.innerHTML = `
-    <div class="dash-grid">
-      <div class="dash-card"><div class="num">${(rfqsResp.list||[]).length}</div><div class="lab">Total RFQs</div></div>
-      <div class="dash-card"><div class="num">${totalPrice.toFixed(0)}</div><div class="lab">Total Quoted Value</div></div>
-      <div class="dash-card"><div class="num">${totalProfit.toFixed(0)}</div><div class="lab">Total Profit</div></div>
-      <div class="dash-card"><div class="num">${avgMargin}%</div><div class="lab">Avg Margin</div></div>
-    </div>
-    <div class="card">
-      <h2>RFQs by Status</h2>
-      <table><tr><th>Status</th><th>Count</th></tr>
-      ${Object.entries(statusCounts).map(([s,c]) => `<tr><td>${s}</td><td>${c}</td></tr>`).join('')}
-      </table>
-    </div>
-    <div class="warn">Time-period filtering (week/month/quarter) and per-company profit breakdown are next-phase additions — this first dashboard gives you overall totals to confirm the numbers are accurate.</div>
-  `;
+  const stC=cn(T.RFQ,'status');
+  const byStatus={};
+  rfqs.forEach(r=>{const s=r[stC]||'—';byStatus[s]=(byStatus[s]||0)+1});
+
+  app.innerHTML=`
+  <div class="kpi">
+    <div class="box"><div class="num">${rfqs.length}</div><div class="lab">Quotations</div></div>
+    <div class="box"><div class="num">${fmt(total)}</div><div class="lab">Quoted value</div></div>
+    <div class="box"><div class="num">${fmt(cost)}</div><div class="lab">Cost</div></div>
+    <div class="box"><div class="num ${profit>=0?'pos':'neg'}">${fmt(profit)}</div><div class="lab">Profit</div></div>
+    <div class="box"><div class="num">${margin.toFixed(1)}%</div><div class="lab">Margin</div></div>
+  </div>
+  <div class="card">
+    <h2>By Status</h2>
+    <table><tr><th>Status</th><th>Count</th></tr>
+    ${Object.entries(byStatus).map(([s,c])=>`<tr><td>${esc(s)}</td><td>${c}</td></tr>`).join('')}</table>
+  </div>
+  <div class="warn">Figures cover the latest revision of each quotation, and mix currencies if you quote in more than one. Per-period and per-client breakdowns come next.</div>`;
 }
 </script>
 </body>
