@@ -844,12 +844,25 @@ function drawBrowseList(){
   const rows=(window._browseProds||[]).filter(p=>!q||[p[sku],p[pn],p[cat],p._supName].some(v=>String(v||'').toLowerCase().includes(q)));
   document.getElementById('browseList').innerHTML=`<table><tr><th>SKU</th><th>Name</th><th>Supplier</th><th>Cost</th><th></th></tr>
   ${rows.map(p=>`<tr><td>${esc(p[sku]||'')}</td><td>${esc(p[pn]||'')}</td><td>${esc(p._supName)}</td><td>${fmt(p[cost])}</td>
-  <td><button class="sm" onclick="addFromProduct(${p.Id});document.getElementById('browseModal').remove()">Add</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No products match.</td></tr>'}</table>`;
+  <td><button class="sm" onclick="this.disabled=true;addFromProduct(${p.Id});document.getElementById('browseModal').remove()">Add</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No products match.</td></tr>'}</table>`;
 }
 function filterBrowseList(){drawBrowseList()}
 async function addFromProduct(pid){
+  const existingIdx=CUR.rows.findIndex(r=>r.productId===pid);
+  if(existingIdx>=0){
+    const ok=confirm(`This product is already on line ${existingIdx+1}. Add it again as a separate line?`);
+    if(!ok)return;
+  }
   const p=await getRec(T.Prod.id,pid);
-  const cost=p[cn(T.Prod,'cost')]||0;
+  let cost=p[cn(T.Prod,'cost')]||0;
+  const prodCurCol=cn(T.Prod,'currency');
+  const prodCur=prodCurCol?p[prodCurCol]:null;
+  if(prodCur&&CUR.currency&&prodCur!==CUR.currency){
+    const rateStr=prompt(`This product is priced in ${prodCur}, but this quotation is in ${CUR.currency}.\nEnter the exchange rate: 1 ${prodCur} = ? ${CUR.currency}`,'');
+    const rate=parseFloat(rateStr);
+    if(!rate||rate<=0){alert('No valid rate entered - item not added.');return}
+    cost=cost*rate;
+  }
   const margin=CUR.marginPct||0;
   CUR.rows.push({
     id:null,
@@ -931,6 +944,12 @@ async function deleteWholeRfq(rfqId){
 }
 async function saveItems(asNew){
   const m=document.getElementById('saveMsg');
+  const unpriced=CUR.rows.filter((r,i)=>r.cost>0&&Math.abs(r.price-r.cost)<0.005);
+  if(unpriced.length){
+    const lines=unpriced.map(r=>CUR.rows.indexOf(r)+1).join(', ');
+    const proceed=confirm(`Line(s) ${lines} are priced exactly at cost \u2014 margin may not have been applied. Save anyway?`);
+    if(!proceed)return;
+  }
   m.innerHTML='<div class="loader">Saving…</div>';
   try{
     if(asNew){
@@ -1067,18 +1086,26 @@ async function buildAndOpenPdf(newTab){
     return [desc,r.delivery||'',fmt(r.qty),fmt(r.price)+' '+sym,fmt(r.qty*r.price)+' '+sym];
   });
   let total=0;CUR.rows.forEach(r=>total+=r.qty*r.price);
+  const totalRowIndex=body.length;
+  body.push(['','','','Total',fmt(total)+' '+sym]);
 
   doc.autoTable({
     head:[['Description','Delivery','Quantity','Unit Price','Amount']],
     body,
-    foot:[['','','','Total',fmt(total)+' '+sym]],
     startY:Math.max(76,refY+12),
     margin:{left:L,right:14,top:42},
     theme:'grid',
     styles:{fontSize:7.5,cellPadding:2,textColor:30,lineColor:[190,190,190],lineWidth:.2,valign:'top'},
     headStyles:{fillColor:[255,255,255],textColor:[41,98,175],fontStyle:'normal',fontSize:8.5,lineColor:[150,150,150]},
-    footStyles:{fillColor:[255,255,255],textColor:[20,20,20],fontStyle:'bold',fontSize:9,lineColor:[150,150,150],lineWidth:.3},
     columnStyles:{0:{cellWidth:88},1:{cellWidth:22,halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:26,halign:'right'},4:{cellWidth:28,halign:'right'}},
+    didParseCell:(data)=>{
+      if(data.section==='body'&&data.row.index===totalRowIndex){
+        data.cell.styles.fontStyle='bold';
+        data.cell.styles.fontSize=9;
+        data.cell.styles.lineWidth=.3;
+        data.cell.styles.lineColor=[150,150,150];
+      }
+    },
     didDrawPage:()=>{header()}
   });
 
