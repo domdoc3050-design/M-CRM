@@ -772,8 +772,10 @@ async function openRfq(rfqId,revId){
       <div><label>Currency</label><input value="${esc(currency)}" disabled></div>
       <div><label>Quotation Date</label><input type="date" value="${(cur[cn(T.Rev,'revision date','date')]||'').slice(0,10)}" onchange="setRev('revision date',this.value)"></div>
       <div><label>Expiration</label><input type="date" value="${(cur[cn(T.Rev,'validity')]||'').slice(0,10)}" onchange="setRev('validity',this.value)"></div>
-      <div><label>Payment Terms</label><input value="${esc(rfq[cn(T.RFQ,'payment terms')]||'')}" onchange="setRfq('payment terms',this.value)"></div>
-      <div><label>Delivery Method</label><input value="${esc(rfq[cn(T.RFQ,'delivery method')]||'')}" onchange="setRfq('delivery method',this.value)"></div>
+    </div>
+    <div class="g2" style="margin-top:8px">
+      <div><label>Payment Terms</label><textarea style="min-height:44px" onchange="setRfq('payment terms',this.value)">${esc(rfq[cn(T.RFQ,'payment terms')]||'')}</textarea></div>
+      <div><label>Delivery Method</label><textarea style="min-height:44px" onchange="setRfq('delivery method',this.value)">${esc(rfq[cn(T.RFQ,'delivery method')]||'')}</textarea></div>
     </div>
   </div>
 
@@ -879,7 +881,11 @@ function moveRow(i,d){
 }
 function setCell(i,k,v){
   CUR.rows[i][k]=(k==='qty'||k==='price')? (parseFloat(v)||0) : v;
-  if(k==='qty'||k==='price')drawTotals();
+  if(k==='qty'||k==='price'){
+    const cell=document.getElementById('amt-'+i);
+    if(cell)cell.textContent=fmt(CUR.rows[i].qty*CUR.rows[i].price);
+    drawTotals();
+  }
 }
 function drawGrid(){
   const g=document.getElementById('grid');
@@ -893,7 +899,7 @@ function drawGrid(){
     <td><input value="${esc(r.delivery)}" onchange="setCell(${i},'delivery',this.value)"></td>
     <td><input type="number" step="any" value="${r.qty}" onchange="setCell(${i},'qty',this.value)"></td>
     <td><input type="number" step="0.01" value="${r.price}" onchange="setCell(${i},'price',this.value)"></td>
-    <td style="text-align:right;padding-top:12px"><b>${fmt(r.qty*r.price)}</b></td>
+    <td style="text-align:right;padding-top:12px"><b id="amt-${i}">${fmt(r.qty*r.price)}</b></td>
     <td><button class="sm" onclick="moveRow(${i},-1)">↑</button> <button class="sm" onclick="moveRow(${i},1)">↓</button><br>
         <button class="danger" style="margin-top:4px" onclick="delRow(${i})">✕</button></td>
   </tr>`).join('')}</table>`;
@@ -1065,20 +1071,16 @@ async function buildAndOpenPdf(newTab){
   doc.autoTable({
     head:[['Description','Delivery','Quantity','Unit Price','Amount']],
     body,
+    foot:[['','','','Total',fmt(total)+' '+sym]],
     startY:Math.max(76,refY+12),
     margin:{left:L,right:14,top:42},
     theme:'grid',
     styles:{fontSize:7.5,cellPadding:2,textColor:30,lineColor:[190,190,190],lineWidth:.2,valign:'top'},
     headStyles:{fillColor:[255,255,255],textColor:[41,98,175],fontStyle:'normal',fontSize:8.5,lineColor:[150,150,150]},
+    footStyles:{fillColor:[255,255,255],textColor:[20,20,20],fontStyle:'bold',fontSize:9,lineColor:[150,150,150],lineWidth:.3},
     columnStyles:{0:{cellWidth:88},1:{cellWidth:22,halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:26,halign:'right'},4:{cellWidth:28,halign:'right'}},
     didDrawPage:()=>{header()}
   });
-
-  let y=doc.lastAutoTable.finalY;
-  doc.setFont('helvetica','bold');doc.setFontSize(11);
-  doc.setDrawColor(150);doc.rect(L,y,R-L,10);
-  doc.text('Total',R-58,y+6.5,{align:'right'});
-  doc.text(fmt(total)+' '+sym,R-3,y+6.5,{align:'right'});
 
   // Terms page
   doc.addPage();header();
