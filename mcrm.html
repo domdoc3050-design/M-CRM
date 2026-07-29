@@ -728,7 +728,7 @@ async function writeItems(revId,items){
 }
 
 /* ============ OPEN RFQ ============ */
-let CUR={rfqId:null,revId:null,rows:[],currency:'EUR'};
+let CUR={rfqId:null,revId:null,rows:[],currency:'EUR',marginPct:0};
 
 async function openRfq(rfqId,revId){
   app.innerHTML='<div class="loader">Loading quotation…</div>';
@@ -744,7 +744,8 @@ async function openRfq(rfqId,revId){
 
   const items=(await childrenOf(T.Item,['revision'],cur.Id)).sort((a,b)=>(a[cn(T.Item,'line no','lineno')]||0)-(b[cn(T.Item,'line no','lineno')]||0));
   const currency=rfq[cn(T.RFQ,'currency')]||'EUR';
-  CUR={rfqId,revId:cur.Id,currency,rows:items.map(i=>({
+  const prevMargin=CUR.marginPct||0;
+  CUR={rfqId,revId:cur.Id,currency,marginPct:prevMargin,rows:items.map(i=>({
     id:i.Id,
     name:i[pv(T.Item).title]||'',
     desc:i[cn(T.Item,'description')]||'',
@@ -784,11 +785,12 @@ async function openRfq(rfqId,revId){
 
   <div class="card">
     <h2>Items</h2>
-    <p class="muted">Search the catalogue to add a product - its name and specifications fill in automatically. You only need to set delivery, quantity and your price.</p>
-    <div class="acbox" style="max-width:520px">
-      <input id="addProd" placeholder="Type a product name or SKU…" autocomplete="off">
-      <div id="addProdList" class="aclist" style="display:none"></div>
+    <p class="muted">Browse the catalogue to add a product - its name and specifications fill in automatically.</p>
+    <div class="g3" style="max-width:600px;align-items:end">
+      <div><label>Default Margin %</label><input id="marginPct" type="number" step="0.1" value="${CUR.marginPct||0}" onchange="CUR.marginPct=parseFloat(this.value)||0"></div>
+      <div><button class="ghost" onclick="applyMarginToAll()">Apply Margin to All Lines</button></div>
     </div>
+    <p class="muted" style="margin-top:4px">New items added from the catalogue use this margin to set their price (cost + margin%). You can still edit any line's price individually afterward.</p>
     <div class="btnrow" style="margin-top:8px">
       <button class="ghost" onclick="openBrowseCatalog()">Browse All Products</button>
       <button class="ghost" onclick="addBlankRow()">+ Blank line (type manually)</button>
@@ -806,15 +808,6 @@ async function openRfq(rfqId,revId){
   </div>`;
 
   drawGrid();
-  document.getElementById('addProd').addEventListener('input',debounce(async function(){
-    const q=this.value.trim(),box=document.getElementById('addProdList');
-    if(!q){box.style.display='none';return}
-    const prods=(await listRec(T.Prod.id,{limit:2000})).list||[];
-    const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost');
-    const hits=prods.filter(p=>[p[sku],p[pn]].some(v=>String(v||'').toLowerCase().includes(q.toLowerCase()))).slice(0,10);
-    box.innerHTML=hits.map(p=>`<div class="acitem" onclick="addFromProduct(${p.Id})"><b>${esc(p[pn]||p[sku])}</b> <span class="muted">${esc(p[sku])} · cost ${fmt(p[cost])}</span></div>`).join('');
-    box.style.display=hits.length?'block':'none';
-  },300));
 }
 
 async function setRfq(kw,val){
@@ -854,18 +847,23 @@ function drawBrowseList(){
 function filterBrowseList(){drawBrowseList()}
 async function addFromProduct(pid){
   const p=await getRec(T.Prod.id,pid);
+  const cost=p[cn(T.Prod,'cost')]||0;
+  const margin=CUR.marginPct||0;
   CUR.rows.push({
     id:null,
     name:p[cn(T.Prod,'name')]||p[pv(T.Prod).title]||'',
     desc:p[cn(T.Prod,'specification')]||'',
     delivery:'',
     qty:1,
-    price:p[cn(T.Prod,'cost')]||0,
-    cost:p[cn(T.Prod,'cost')]||0,
+    price:cost*(1+margin/100),
+    cost:cost,
     productId:pid
   });
-  document.getElementById('addProd').value='';
-  document.getElementById('addProdList').style.display='none';
+  drawGrid();
+}
+function applyMarginToAll(){
+  const margin=CUR.marginPct||0;
+  CUR.rows.forEach(r=>{r.price=(r.cost||0)*(1+margin/100)});
   drawGrid();
 }
 function addBlankRow(){
