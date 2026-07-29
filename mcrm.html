@@ -713,13 +713,14 @@ async function openRfq(rfqId,revId){
     <h2>${esc(rNum)}-${esc(revName)}</h2>
     <p class="muted">${comp?esc(comp[pv(T.Comp).title]):''} · ${esc(rfq[cn(T.RFQ,'project')]||'')}</p>
     <div class="g4">
+      <div><label>Project Name</label><input value="${esc(rfq[cn(T.RFQ,'project')]||'')}" onchange="setRfq('project',this.value)"></div>
       <div><label>Status</label><select onchange="setRfq('status',this.value)">${stOpts}</select></div>
       <div><label>Salesperson</label><input value="${esc(rfq[cn(T.RFQ,'salesperson')]||'')}" onchange="setRfq('salesperson',this.value)"></div>
+      <div><label>Currency</label><input value="${esc(currency)}" disabled></div>
       <div><label>Quotation Date</label><input type="date" value="${(cur[cn(T.Rev,'revision date','date')]||'').slice(0,10)}" onchange="setRev('revision date',this.value)"></div>
       <div><label>Expiration</label><input type="date" value="${(cur[cn(T.Rev,'validity')]||'').slice(0,10)}" onchange="setRev('validity',this.value)"></div>
       <div><label>Payment Terms</label><input value="${esc(rfq[cn(T.RFQ,'payment terms')]||'')}" onchange="setRfq('payment terms',this.value)"></div>
       <div><label>Delivery Method</label><input value="${esc(rfq[cn(T.RFQ,'delivery method')]||'')}" onchange="setRfq('delivery method',this.value)"></div>
-      <div><label>Currency</label><input value="${esc(currency)}" disabled></div>
     </div>
   </div>
 
@@ -889,6 +890,15 @@ async function searchProds(){
 
 /* ============ PDF ============ */
 async function printQuotation(){
+  const newTab=window.open('','_blank');
+  try{
+    await buildAndOpenPdf(newTab);
+  }catch(e){
+    if(newTab)newTab.close();
+    alert('Could not generate PDF: '+e.message);
+  }
+}
+async function buildAndOpenPdf(newTab){
   const rfq=await getRec(T.RFQ.id,CUR.rfqId);
   const compId=linkedId(rfq,cn(T.RFQ,'company'));
   const comp=compId?await getRec(T.Comp.id,compId):{};
@@ -927,21 +937,32 @@ async function printQuotation(){
   doc.setTextColor(41,98,175);doc.setFont('helvetica','normal');doc.setFontSize(15);
   doc.text('Quotation # '+num,L,49);
 
-  doc.setTextColor(40);doc.setFontSize(9);doc.setFont('helvetica','bold');
   const clientName=comp[pv(T.Comp).title]||'';
-  doc.text(doc.splitTextToSize(clientName,80),R,45,{align:'right'});
-  doc.setFont('helvetica','normal');
+  const clientAddr=comp[cn(T.Comp,'address')]||'';
+  const clientPhone=comp[cn(T.Comp,'phone')]||'';
+  const clientEmail=comp[cn(T.Comp,'email')]||'';
+  doc.setTextColor(130);doc.setFontSize(7);doc.setFont('helvetica','normal');
+  doc.text('QUOTATION FOR / TO:',R,42,{align:'right'});
+  doc.setTextColor(40);doc.setFontSize(9.5);doc.setFont('helvetica','bold');
+  let cy=46;
+  doc.text(doc.splitTextToSize(clientName,80),R,cy,{align:'right'});
+  cy+=(doc.splitTextToSize(clientName,80).length*4)+1;
+  doc.setFont('helvetica','normal');doc.setFontSize(7.2);doc.setTextColor(70);
+  if(clientAddr){const al=doc.splitTextToSize(clientAddr,80);doc.text(al,R,cy,{align:'right'});cy+=al.length*3.3}
+  if(clientPhone){doc.text(clientPhone,R,cy,{align:'right'});cy+=3.3}
+  if(clientEmail){doc.text(clientEmail,R,cy,{align:'right'});cy+=3.3}
 
+  const refY=Math.max(62,cy+4);
   doc.setFontSize(8.5);doc.setTextColor(41,98,175);
-  doc.text('Your Reference:',L,62);
-  doc.text('Quotation Date:',L+58,62);
-  doc.text('Expiration:',L+108,62);
-  doc.text('Salesperson:',L+148,62);
+  doc.text('Your Reference:',L,refY);
+  doc.text('Quotation Date:',L+58,refY);
+  doc.text('Expiration:',L+108,refY);
+  doc.text('Salesperson:',L+148,refY);
   doc.setTextColor(40);
-  doc.text(String(rfq[cn(T.RFQ,'project')]||''),L,67);
-  doc.text(dmy(rev[cn(T.Rev,'revision date','date')]),L+58,67);
-  doc.text(dmy(rev[cn(T.Rev,'validity')]),L+108,67);
-  doc.text(String(rfq[cn(T.RFQ,'salesperson')]||''),L+148,67);
+  doc.text(String(rfq[cn(T.RFQ,'project')]||''),L,refY+5);
+  doc.text(dmy(rev[cn(T.Rev,'revision date','date')]),L+58,refY+5);
+  doc.text(dmy(rev[cn(T.Rev,'validity')]),L+108,refY+5);
+  doc.text(String(rfq[cn(T.RFQ,'salesperson')]||''),L+148,refY+5);
 
   const body=CUR.rows.map(r=>{
     const desc=(r.name?r.name+'\n':'')+(r.desc||'');
@@ -952,7 +973,7 @@ async function printQuotation(){
   doc.autoTable({
     head:[['Description','Delivery','Quantity','Unit Price','Amount']],
     body,
-    startY:76,
+    startY:Math.max(76,refY+12),
     margin:{left:L,right:14,top:42},
     theme:'grid',
     styles:{fontSize:7.5,cellPadding:2,textColor:30,lineColor:[190,190,190],lineWidth:.2,valign:'top'},
@@ -993,7 +1014,9 @@ async function printQuotation(){
 
   const tot=doc.internal.getNumberOfPages();
   for(let i=1;i<=tot;i++){doc.setPage(i);footer(i,tot)}
-  doc.save(num+'.pdf');
+  const blobUrl=doc.output('bloburl');
+  if(newTab){newTab.location.href=blobUrl}
+  else{window.open(blobUrl,'_blank')}
 }
 
 /* ============ DASHBOARD ============ */
