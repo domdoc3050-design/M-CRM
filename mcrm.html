@@ -117,6 +117,7 @@ const TERMS=[
 ['Force Majeure:','Neither party shall be liable for any failure or delay in performance caused by an event of Force Majeure, which is defined as any unforeseen event beyond that party\u2019s reasonable control that hinders or prevents performance. These events include, but are not limited to, Acts of God, war, hostilities, epidemics, government actions, and general labor strikes.\nThe affected party must provide immediate written notice of the event, its expected duration, and its effect on performance, and must use all reasonable efforts to mitigate its impact. If the Force Majeure event persists for more than three (3) months, either party may terminate this Order upon written notice, and neither party shall incur any further liability, except for obligations accrued prior to termination.']
 ];
 
+const LOGO_DATA='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAkACQAAD/4QCARXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAACQAAAAAQAAAJAAAAABAAKgAgAEAAAAAQAAALSgAwAEAAAAAQAAADYAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADYAtAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAICAgICAgMCAgMFAwMDBQYFBQUFBggGBgYGBggKCAgICAgICgoKCgoKCgoMDAwMDAwODg4ODg8PDw8PDw8PDw//2wBDAQICAgQEBAcEBAcQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/3QAEAAz/2gAMAwEAAhEDEQA/AP38or5x/a28Y+J/AH7Pfi7xb4N1B9L1jT4YGt7mNUZoy08aEgSKynKkjkGvyn/Zc/bx+J1j8V9P0r44eKm1bwtrOLSSa7jghWxmcjy7gvFHHhAflk3HaFO4420AfvNRX5w/t8/tV6x8GNH034f/AA4vzZeMNYxdS3SCNzZWSNgHbIrAvMwKrlSAqueCVrg/+Cdnx5+L/wAYPFnjOx+JniafX7fTbK0kt0migjEbySOGI8mNCcgAc5oA/VonHWvgb9qD9ufwF8GYbnwv4Ju4vEHje1niSS1RDLaW4SVTPHdShk2uYw6qELOj4LLgEVd/b5/aB1P4J/CmDR/Cl19k8S+L5JLS2mXmSC2jANzMnowDqinqpcMORX50fsjfsPz/AB90C8+I/j3UZ9L8PSNLDYLBgz3lwmQ8jlwQIUf5Tj5nIYApt3EA/RPQP+Cgvwavfhjp/wASfEFpqWlw3F4+mXEK2zTiC9SHzigkG1ZFZCCCuSNy71TNegfsn/tHat+0f4Q1/wAY6roMPh+z0vUns4ClwZTIqosp3gqu0ojoC3RiTgDGK6TSP2V/gxafCTR/g3regQ63omkISGuQRNJcuP3tzvjKskshycoRjouAAK/Gf9rH9m3Wf2XdcRPC+tahJ8OvGTCKVUlImHlNua2nVdiS4U7oi2A3IIBBZgD+iTrRXgnwB+Inwg8UeEbPwb8KPFJ8TweFbK1t5JJnke5CbNsbTNIqZZtpzgAA8AAYFfkD+09+1h+0X4J+PXjTwn4T8cXWm6Rpt8Yra3SC1ZY0CqcAyQsx69yaAP35or5K+DH7Vfgnx1+z1J8ZvE96li3h63ZddjVTuhuoVG4Rp1YTZBiA67gv3gQPxk8Wft4/tL634m1PWNC8Y3Giadd3EkltYxQWrJbQk/JGGeFmbauASWOTzQB/ShRVe0ZntYXc5ZkUk+5Ffzy+Lf2sf2wL34w+I/Angfxvf3Ei67qFjp9jb2GnyyFIrmRIokBtWdsKoAySTjkmgD+iKivwP/4Tr/gqN/e8Uf8Agjsf/kOv2E/ZzvfiNqHwX8MXnxb+0/8ACXSQynUPtcKW8/mCaQLvjjRFU7NvAUcc0Ae2UV+Ef7VP7Wv7Rfw3/aJ8UeGPBvjSaw0XS7mDyLL7JZSRBfKjdlLSQNIQxJz8+eeCK/U39nj9oTw/+0J8MF8XaQyWmsWcflanZK2WtboKTwDyY3xujboRkZ3KwAB9H0V+G37EP7U/7QvxQ+Pnhrwn8QfGtxrej6hbXjzW0lrZRKzR2kkqHdBbxuMMoPDY9a+pv23/ABb+1j4c8U+Gof2dhrZ06azma+/srSo9QTzhJhN7PbT7Tt6AEZHagD9I6K/ms1n9r39tfw9rs3hfXvG+q6drFs6xy2dxpenxXEbuoZVaJ7MMCysCARyCD3r7c/ZT8dfty638bNG0741DxGPCckV0bn+0NEisrfcsLGPdMlpEVO/GBvGTxzQB+u9FFFAH/9D9Sf25f+TWfHX/AFwt/wD0pir8BvB/wV1rxz8IPGPxP0BjM/gq4tje223ObKdJDJOpGeYmQFgRjYWbI24b+hP9sTw5r3iz9nHxl4f8MadPqup3cMAhtrWNpppCtxGxCogJOACeB0r5R/4JufC7x14F0Dx9p/xF8MX2iJqktmI4tStZIBPGElEgCyqNy/MAe3PNAH5ZeD/hx48+NuieOfin4gvLi707wVpBmub64be0ksMQjtLVS2SSFUE44VF5ILLn7f8A+CUf/I7/ABB/7B1l/wCjpK+9PiX8DPD/AMPf2VfHnwx+EWhysb+yvZIra3Rp7i4uLh92OAWcgEIg5wiqo4FfJX/BNX4VfEv4d+L/ABvdePPC+peH4b2xtEge/tJbZZGSVywQyKMkAgnFAHkH7fPjj4N/FD4vW+k3vjLUtMn8HwS6XcQW+iC8iS5SdzMwklvbQ/3VO1GB2ghiMV+w/wAFvCekeBvhJ4P8JaFOl1Y6ZpVpElxGmxbg+UpafbubBlYmQ/MeW6nrXxT/AMFDvAMGrfDewsPBXw9bXPE/iXV4EGoadaK1xC8ak/vWjUyP5qAoN3ygAsxG1QfAv2b/ANsvV/2d4T8BP2lNIvtOj8O5gtLoxmWe2jzlYZUyTJCAf3UkZYbMBQU2kAH7Q1+df/BTi50SL9na1t9RAa9m1uz+xDjIlWOYu308rePqRXomsf8ABQH9ljS9L/tK28WSalIy7kt7axu/Ob2xLFGqn/eYV+VHx7+KPxh/bI1e78aeGfB2oXXw/wDBLHZa26szJHKw3yTvHkmZ0UbhHu8peRxudgD9CP8AgnNq/wAELz4cvpnw/wBPNr4xtLeE+IZpIpN80jM+wiViylOu1VIA5+UEmvzJ/aL0K18U/tra54XvXaO21rxNZ2Mrx43rHdSxRMVzkbgGOMjrX9A/wn0fw1b+DtK8Q6H4Oh8E3GtWVtNcWAtoreeElMiGby1XLR7iPmAI5yAcivxm+K3wQ+MOqftsP4x03wXq91oX/CWaZd/bo7KZrb7PHcQO8nmhdmxVBJOcDBoA+P8Axz4E+Knwp8b69+z2Wu5Jr+/toTZWyts1RlY/YpEjGd+/zMoAT8xwfmXjM+OXwpu/gr8QJ/h5qM/2i+sLOwlumGNouLm1jnlRSOqozlQe4Ge9f00698HvAfiX4keHvivq+nibxD4ZgngtJs8BZuhcfxGP5vL/ALpdj1wR+MP7cfwN+MnjT9pTxN4h8I+CtY1jS7qKwEV1aWU00LlLOFGw6KV+VlIPPBFAH7zWX/HnB/uL/Kv5cL+88d2H7T+uXvwwSSTxXD4q1NtNWKOOVzcfbJdu1JQyMfZgRX9R9mCtpCrAghFBB68Cv5wfEXwc/ad8LfHXxB8Q/AvgfXYr208Q6jfafeR6XJOnzXUjRyKHjeN1KkEZBBBoA+hv+E//AOCqH/Pjqv8A4KNL/wDjFfs74Nl1qbwjoc3iUMNXksbZr0Mqq32kxKZcqoCg785AGB2r8SP+Fxf8FPP+gfr/AP4TNr/8hV+tH7Nur/E3Xvgz4e1X4xRzxeLp1uDerc2yWkoIuJFj3Qokar+7C9FGRz3oA/CT9r/S01z9sbxJokkhiTUdUsLZnAyVEyQoSB6jOag8Oa98Uv2Ffj7eaRqqvJFF+4voEBW31TTJSdk0W8df442ByrqUY43g+4ftF/A74xeIf2wdQ8WaH4L1e/0WTWNNmW9gsppLcxx+TvcSKpXC4OTnjFfpR+19+zLpv7RPgE/2cq2/i7RFeXSrjIUSEjLW0pI/1cmODxtbDZxuBAPx5/4J1RmH9qPwjCxyUtdQUke1jMK/pDwK/Bn9hz4FfGTwP+0r4f17xh4L1bR9Ns4tQWW5urSWKBS9rKijzGG35mIAwee1fvNQB/NX+1p/yer4z/7C+nf+kdrX9KeBX4CftM/Aj4z+JP2tvFXirQPBOsajo95qljLDeQWU0kDolrbIzCRVK4DKwJzxg1+/Y6UALRRRQB//0f38ooooAKKKKACvjbxv+xV8Nvib8bL/AOLnxEuJ9dtL+yW1/siQtFDFIiCJZEmhdJMBQSF6hzuDcAD7JooA/K/4W/8ABOTwhpPxR8Zah8SdJt9U8GSSy/8ACPWqX115kMTysU84o6MxSLC/Oz5PJyea+wf2bP2c9L/Zt8Oa14Y0TXbvWbLVtQe+RblUQQblEaquzq3logdiQGK5CrnFfR9FABXG+DtXvtXXWftrBvsepT28eABiNFQgHHU8nmuyrnfD2gjQRqIExm/tC8luzldu0yBRt6nONvWvKxdKu8VQlTfuLm5tfLTTrqdtCdJUail8Ttb79TzzVfH1/pXiHxJo1yuyC3iH2KfaNq3H2YSiN/djkrnrgivSdDvZ77w5Y6hcEGae2jkYgYG5kBPH1rAvvAthqc2vHUXM0Ou+SWQAKYjDGEVlbJ543Djiuo0vTv7N0e10oP5n2aBId2MZ2LtzjJx+deBkeDzOni6ssVO9N87jrqr1G4r0UbWe6T5Xa2vqZliMHKhBUI2muW/n7qu//Ar3+/qeT6H4m8Uw2Xh3XdTvI7yz1y4FrJF5QR4nkLBGRlPIyvIIruPG+sX2i2Gnz2DBHuNQtLdyQD+7lkCsOe+O9Y2hfDx9OfTk1PVJL620hme1g8tYkWRs/O2CxYjcduTx6V1Pinw8niXSv7PM7Wskcsc8UqAEpLE25GweCAeo/l1rzsry/NYZXWpzclVcVypzvLmUVzPmu7KUr21030vZdWMxWBeNpyilyXd7RsrcztpZbK19PvMyx1i+l8c6hocjg2tvZwzIuBkO7MG569AKwPFniDVtO8UW2n3F+dG0maAGO68gSo9yXIMcjtkINuCM7c5610fh7wtc6XqV5rmrX51HULxEiLiMQxrHHnaqoC3ckkk/lUXinwxq3iMS2Ueq/ZNOuYvKng8hZGYEnJVyRtJBx0OMZ61vjMLmU8um4qXtXOUlHmV+XmbUZNTjZWtflnp0vZp5UK2Ejio3a5OVJuzteyu0nF637x18tzqL2G5ubJo7O4+zTN92QKH28/3Twa4PwhN4l1O7v5dQ1XzodPvZ7XyhAieYsajDFhyDls8eleiwQrBAkEY+WNQozzwBgVi6Dof9iHUMS+b9vu5bo5GNplx8vU5xjrX0GNy+pUxdCsnJJX5rSaXldJpPXy166HmYbEwhQqwaV3a14pvz1s7aefocb8QvEt3oWpaLbR6kulWt79o8+dohLtESBlwCD34rovA+q6lrnhi11LVQBPNvwwQxiRA5CPsPK71AOPep9a8Mwa1rGl6ncONmmicGIqGWUTpsIOT0A9jmp/DOhSeHNO/sr7Sbm3idvI3Lho4icrGTk7tvQE444rycDgMxhnFbEVZN0JXUVfRe7Ss7XsveU7WSd273TVu3E4nCywFOlBfvFu7ec+tr7OO7a2tZp34S48QeJ4tffwWCDf3E4mguRGNi2HV2I6b0I2e5INetqCFAPJrnJPD/AJniuHxP5xBhtJLXy9vBDyK+7dnttxjFdLXp5FgcRRlW+sTclze7d3tDdfO7au9Wkr7HHmWIo1FT9lFLT3rL7XX5WS0Wi1sFFFFfQnln/9L9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z';
 const CURSYM={EUR:'\u20AC',USD:'$',EGP:'EGP ',TRY:'\u20BA'};
 
 /* ============ UTIL ============ */
@@ -902,16 +903,20 @@ async function printQuotation(){
   const L=14,R=W-14;
 
   function header(){
-    doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(30,30,30);
-    doc.text('MOMENT',L,16);
-    doc.setTextColor(245,166,35);doc.text('INDUSTRY',L+34,16);
+    try{
+      doc.addImage(LOGO_DATA,'JPEG',L,8,32,12);
+    }catch(e){
+      doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(30,30,30);
+      doc.text('MOMENT',L,16);
+      doc.setTextColor(245,166,35);doc.text('INDUSTRY',L+34,16);
+    }
     doc.setTextColor(60,60,60);doc.setFont('helvetica','normal');doc.setFontSize(6.5);
-    doc.text(CO.legal,L,22);
-    doc.text('Address: '+CO.address,L,25);
-    doc.text('Tel: '+CO.tel,L,28);
-    doc.text('Email: '+CO.email,L,31);
-    doc.text('Website: '+CO.web,L,34);
-    doc.setDrawColor(180);doc.setLineWidth(.3);doc.line(L,36,R,36);
+    doc.text(CO.legal,L,25);
+    doc.text('Address: '+CO.address,L,28);
+    doc.text('Tel: '+CO.tel,L,31);
+    doc.text('Email: '+CO.email,L,34);
+    doc.text('Website: '+CO.web,L,37);
+    doc.setDrawColor(180);doc.setLineWidth(.3);doc.line(L,39,R,39);
   }
   function footer(p,tot){
     doc.setFontSize(7.5);doc.setTextColor(120);
@@ -919,23 +924,24 @@ async function printQuotation(){
   }
 
   header();
-  doc.setTextColor(41,98,175);doc.setFont('helvetica','normal');doc.setFontSize(17);
-  doc.text('Quotation # '+num,L,48);
+  doc.setTextColor(41,98,175);doc.setFont('helvetica','normal');doc.setFontSize(15);
+  doc.text('Quotation # '+num,L,49);
 
-  doc.setTextColor(40);doc.setFontSize(9);
+  doc.setTextColor(40);doc.setFontSize(9);doc.setFont('helvetica','bold');
   const clientName=comp[pv(T.Comp).title]||'';
-  doc.text(doc.splitTextToSize(clientName,80),W/2+4,46);
+  doc.text(doc.splitTextToSize(clientName,80),R,45,{align:'right'});
+  doc.setFont('helvetica','normal');
 
   doc.setFontSize(8.5);doc.setTextColor(41,98,175);
-  doc.text('Your Reference:',L,60);
-  doc.text('Quotation Date:',L+58,60);
-  doc.text('Expiration:',L+108,60);
-  doc.text('Salesperson:',L+148,60);
+  doc.text('Your Reference:',L,62);
+  doc.text('Quotation Date:',L+58,62);
+  doc.text('Expiration:',L+108,62);
+  doc.text('Salesperson:',L+148,62);
   doc.setTextColor(40);
-  doc.text(String(rfq[cn(T.RFQ,'project')]||''),L,65);
-  doc.text(dmy(rev[cn(T.Rev,'revision date','date')]),L+58,65);
-  doc.text(dmy(rev[cn(T.Rev,'validity')]),L+108,65);
-  doc.text(String(rfq[cn(T.RFQ,'salesperson')]||''),L+148,65);
+  doc.text(String(rfq[cn(T.RFQ,'project')]||''),L,67);
+  doc.text(dmy(rev[cn(T.Rev,'revision date','date')]),L+58,67);
+  doc.text(dmy(rev[cn(T.Rev,'validity')]),L+108,67);
+  doc.text(String(rfq[cn(T.RFQ,'salesperson')]||''),L+148,67);
 
   const body=CUR.rows.map(r=>{
     const desc=(r.name?r.name+'\n':'')+(r.desc||'');
@@ -946,7 +952,7 @@ async function printQuotation(){
   doc.autoTable({
     head:[['Description','Delivery','Quantity','Unit Price','Amount']],
     body,
-    startY:72,
+    startY:76,
     margin:{left:L,right:14,top:42},
     theme:'grid',
     styles:{fontSize:7.5,cellPadding:2,textColor:30,lineColor:[190,190,190],lineWidth:.2,valign:'top'},
