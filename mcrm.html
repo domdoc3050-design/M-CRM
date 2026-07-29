@@ -451,7 +451,7 @@ async function renderCompanies(){
   app.innerHTML='<div class="loader">Loading companies…</div>';
   const r=await listRec(T.Comp.id);
   window._comps=r.list||[];
-  const nm=pv(T.Comp).title,code=cn(T.Comp,'client code','clientcode');
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client no','clientno','client code');
   app.innerHTML=`
   <div class="card">
     <h2>Add Company</h2>
@@ -475,7 +475,7 @@ async function renderCompanies(){
 }
 function drawCompTable(){
   const q=(document.getElementById('cFilter')?.value||'').toLowerCase();
-  const nm=pv(T.Comp).title,code=cn(T.Comp,'client code','clientcode');
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client no','clientno','client code');
   const rows=window._comps.filter(c=>!q||String(c[nm]||'').toLowerCase().includes(q));
   document.getElementById('compTable').innerHTML=`<table><tr><th>Code</th><th>Name</th><th>Phone</th><th>Email</th></tr>
   ${rows.map(c=>`<tr class="clickrow" onclick="openCompany(${c.Id})"><td><b>${c[code]??''}</b></td><td class="link">${esc(c[nm])}</td><td>${esc(c[cn(T.Comp,'phone')]||'')}</td><td>${esc(c[cn(T.Comp,'email')]||'')}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">No matches.</td></tr>'}</table>`;
@@ -486,7 +486,7 @@ function dupCheck(v){
   document.getElementById('dup').innerHTML=hit?'<div class="warn">⚠️ A company with this exact name already exists.</div>':'';
 }
 async function nextClientCode(){
-  const code=cn(T.Comp,'client code','clientcode');
+  const code=cn(T.Comp,'client no','clientno','client code');
   if(!code)return null;
   const r=await listRec(T.Comp.id);
   const max=Math.max(CLIENT_CODE_START-1,...(r.list||[]).map(c=>parseInt(c[code])||0));
@@ -498,7 +498,7 @@ async function saveCompany(){
   if(!n){m.innerHTML='<div class="err">Name required.</div>';return}
   try{
     const f={[pv(T.Comp).title]:n};
-    const a=cn(T.Comp,'address'),p=cn(T.Comp,'phone'),e=cn(T.Comp,'email'),code=cn(T.Comp,'client code','clientcode');
+    const a=cn(T.Comp,'address'),p=cn(T.Comp,'phone'),e=cn(T.Comp,'email'),code=cn(T.Comp,'client no','clientno','client code');
     if(a)f[a]=document.getElementById('cA').value;
     if(p)f[p]=document.getElementById('cP').value;
     if(e)f[e]=document.getElementById('cE').value;
@@ -515,7 +515,7 @@ async function openCompany(id){
   app.innerHTML='<div class="loader">Loading…</div>';
   const c=await getRec(T.Comp.id,id);
   const [contacts,rfqs]=await Promise.all([childrenOf(T.Cont,['company'],id),childrenOf(T.RFQ,['company'],id)]);
-  const nm=pv(T.Comp).title,code=cn(T.Comp,'client code','clientcode');
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client no','clientno','client code');
   const cN=pv(T.Cont).title,cPos=cn(T.Cont,'position'),cPh=cn(T.Cont,'phone'),cEm=cn(T.Cont,'email');
   const rNum=cn(T.RFQ,'rfq number','quotation number'),rSt=cn(T.RFQ,'status'),rProj=cn(T.RFQ,'project'),rDeal=pv(T.RFQ).title;
   app.innerHTML=`
