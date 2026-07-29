@@ -529,6 +529,11 @@ async function openCompany(id){
   <div class="card">
     <h2>${esc(c[nm])} <span class="muted">· Client Code ${c[code]??'—'}</span></h2>
     <p class="muted">${esc(c[cn(T.Comp,'address')]||'')}<br>${esc(c[cn(T.Comp,'phone')]||'')} ${c[cn(T.Comp,'email')]?'· '+esc(c[cn(T.Comp,'email')]):''}</p>
+    <div class="btnrow">
+      <button class="ghost" onclick="editCompanyForm(${id})">Edit Company</button>
+      <button class="danger" onclick="deleteCompany(${id})">Delete Company</button>
+    </div>
+    <div id="editCompForm"></div>
   </div>
   <div class="card">
     <h2>Contacts (${contacts.length})</h2>
@@ -546,6 +551,46 @@ async function openCompany(id){
     <div class="btnrow"><button class="primary" onclick="VIEW='newRfq';route()">+ New Quotation</button>
     <button class="ghost" onclick="VIEW='companies';route()">← Back</button></div>
   </div>`;
+}
+function editCompanyForm(id){
+  const c=(window._comps||[]).find(x=>x.Id===id);
+  const nm=pv(T.Comp).title,code=cn(T.Comp,'client id','clientid','client no','client code');
+  const box=document.getElementById('editCompForm');
+  box.innerHTML=`
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #eef1f4">
+    <div class="g2">
+      <div><label>Company Name</label><input id="ecN" value="${esc(c?c[nm]:'')}"></div>
+      <div><label>Client Code</label><input id="ecCode" type="number" value="${c&&code&&c[code]!=null?c[code]:''}"></div>
+      <div><label>Phone</label><input id="ecP" value="${esc(c?(c[cn(T.Comp,'phone')]||''):'')}"></div>
+      <div><label>Email</label><input id="ecE" value="${esc(c?(c[cn(T.Comp,'email')]||''):'')}"></div>
+    </div>
+    <label>Address</label><textarea id="ecA">${esc(c?(c[cn(T.Comp,'address')]||''):'')}</textarea>
+    <div class="btnrow">
+      <button class="primary" onclick="saveCompanyEdit(${id})">Save Changes</button>
+      <button class="ghost" onclick="document.getElementById('editCompForm').innerHTML=''">Cancel</button>
+    </div>
+    <div id="ecMsg"></div>
+  </div>`;
+}
+async function saveCompanyEdit(id){
+  const m=document.getElementById('ecMsg');
+  try{
+    const f={};
+    const nm=pv(T.Comp).title,code=cn(T.Comp,'client id','clientid','client no','client code'),
+          a=cn(T.Comp,'address'),p=cn(T.Comp,'phone'),e=cn(T.Comp,'email');
+    f[nm]=document.getElementById('ecN').value.trim();
+    if(code){const v=document.getElementById('ecCode').value;f[code]=v===''?null:parseInt(v)}
+    if(a)f[a]=document.getElementById('ecA').value;
+    if(p)f[p]=document.getElementById('ecP').value;
+    if(e)f[e]=document.getElementById('ecE').value;
+    await updateRec(T.Comp.id,id,f);
+    openCompany(id);
+  }catch(e){m.innerHTML=`<div class="err">${esc(e.message)}</div>`}
+}
+async function deleteCompany(id){
+  if(!confirm('Delete this company? Linked contacts and quotations are not deleted automatically.'))return;
+  await deleteRec(T.Comp.id,id);
+  VIEW='companies';route();
 }
 function addContactForm(cid){
   document.getElementById('ctForm').innerHTML=`
@@ -739,11 +784,15 @@ async function openRfq(rfqId,revId){
 
   <div class="card">
     <h2>Items</h2>
+    <p class="muted">Search the catalogue to add a product - its name and specifications fill in automatically. You only need to set delivery, quantity and your price.</p>
     <div class="acbox" style="max-width:520px">
-      <input id="addProd" placeholder="Search catalogue to add a line…" autocomplete="off">
+      <input id="addProd" placeholder="Type a product name or SKU…" autocomplete="off">
       <div id="addProdList" class="aclist" style="display:none"></div>
     </div>
-    <div class="btnrow" style="margin-top:8px"><button class="ghost" onclick="addBlankRow()">+ Blank line</button></div>
+    <div class="btnrow" style="margin-top:8px">
+      <button class="ghost" onclick="openBrowseCatalog()">Browse All Products</button>
+      <button class="ghost" onclick="addBlankRow()">+ Blank line (type manually)</button>
+    </div>
     <div id="grid" style="margin-top:12px"></div>
     <div id="totals"></div>
     <div class="btnrow">
@@ -751,6 +800,7 @@ async function openRfq(rfqId,revId){
       <button class="dark" onclick="saveItems(true)">📄 Save as New Revision</button>
       <button class="ghost" onclick="printQuotation()">🖨 Print PDF</button>
       <button class="ghost" onclick="VIEW='search';route()">← Back</button>
+      <button class="danger" style="margin-left:auto" onclick="deleteWholeRfq(${rfqId})">Delete Quotation</button>
     </div>
     <div id="saveMsg"></div>
   </div>`;
@@ -776,6 +826,32 @@ async function setRev(kw,val){
   if(c)await updateRec(T.Rev.id,CUR.revId,{[c]:val||null});
 }
 
+async function openBrowseCatalog(){
+  const prods=(await listRec(T.Prod.id,{limit:2000})).list||[];
+  const sup=(await listRec(T.Sup.id)).list||[];
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),supl=cn(T.Prod,'supplier');
+  const snm=pv(T.Sup).title;
+  const d=document.createElement('div');
+  d.className='modal';d.id='browseModal';
+  d.innerHTML=`<div class="inner" style="max-width:900px">
+    <h2>Browse Products</h2>
+    <input id="browseFilter" placeholder="Filter by name, SKU or category…" oninput="filterBrowseList()">
+    <div id="browseList" style="max-height:60vh;overflow-y:auto;margin-top:10px"></div>
+    <div class="btnrow"><button class="ghost" onclick="document.getElementById('browseModal').remove()">Close</button></div>
+  </div>`;
+  document.body.appendChild(d);
+  window._browseProds=prods.map(p=>({...p,_supName:linkedName(p,supl)}));
+  drawBrowseList();
+}
+function drawBrowseList(){
+  const q=(document.getElementById('browseFilter')?.value||'').toLowerCase();
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category');
+  const rows=(window._browseProds||[]).filter(p=>!q||[p[sku],p[pn],p[cat],p._supName].some(v=>String(v||'').toLowerCase().includes(q)));
+  document.getElementById('browseList').innerHTML=`<table><tr><th>SKU</th><th>Name</th><th>Supplier</th><th>Cost</th><th></th></tr>
+  ${rows.map(p=>`<tr><td>${esc(p[sku]||'')}</td><td>${esc(p[pn]||'')}</td><td>${esc(p._supName)}</td><td>${fmt(p[cost])}</td>
+  <td><button class="sm" onclick="addFromProduct(${p.Id});document.getElementById('browseModal').remove()">Add</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No products match.</td></tr>'}</table>`;
+}
+function filterBrowseList(){drawBrowseList()}
 async function addFromProduct(pid){
   const p=await getRec(T.Prod.id,pid);
   CUR.rows.push({
@@ -811,7 +887,7 @@ function drawGrid(){
   const g=document.getElementById('grid');
   if(!CUR.rows.length){g.innerHTML='<div class="warn">No items yet. Search the catalogue above or add a blank line.</div>';drawTotals();return}
   g.innerHTML=`<table class="itemgrid">
-  <tr><th style="width:26px">#</th><th style="width:22%">Item</th><th>Description / Specification</th><th style="width:88px">Delivery</th><th style="width:70px">Qty</th><th style="width:92px">Unit Price</th><th style="width:96px">Amount</th><th style="width:74px"></th></tr>
+  <tr><th style="width:26px">#</th><th style="width:22%">Product Name</th><th>Description / Specification</th><th style="width:88px">Delivery</th><th style="width:70px">Qty</th><th style="width:92px">Unit Price</th><th style="width:96px">Amount</th><th style="width:74px"></th></tr>
   ${CUR.rows.map((r,i)=>`<tr>
     <td>${i+1}</td>
     <td><input value="${esc(r.name)}" onchange="setCell(${i},'name',this.value)"></td>
@@ -838,6 +914,17 @@ function drawTotals(){
   </div>`;
 }
 
+async function deleteWholeRfq(rfqId){
+  if(!confirm('Delete this ENTIRE quotation - all revisions and all items, permanently? This cannot be undone.'))return;
+  const revs=await childrenOf(T.Rev,['parent'],rfqId);
+  for(const r of revs){
+    const items=await childrenOf(T.Item,['revision'],r.Id);
+    for(const it of items)await deleteRec(T.Item.id,it.Id);
+    await deleteRec(T.Rev.id,r.Id);
+  }
+  await deleteRec(T.RFQ.id,rfqId);
+  VIEW='search';route();
+}
 async function saveItems(asNew){
   const m=document.getElementById('saveMsg');
   m.innerHTML='<div class="loader">Saving…</div>';
