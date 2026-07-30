@@ -332,6 +332,9 @@ async function renderProducts(){
   const [p,s]=await Promise.all([listRec(T.Prod.id,{limit:2000}),listRec(T.Sup.id)]);
   window._prods=p.list||[];window._sups=s.list||[];
   const sn=pv(T.Sup).title;
+  const curCol=col(T.Prod,'currency');
+  const curOpts=(curCol?.colOptions?.options||[]).map(o=>o.title);
+  const curOptsHtml=(curOpts.length?curOpts:['EUR','USD','TRY','EGP']).map(c=>`<option>${esc(c)}</option>`).join('');
   app.innerHTML=`
   <div class="card">
     <h2>Add Product</h2>
@@ -340,6 +343,7 @@ async function renderProducts(){
       <div><label>Name</label><input id="pN"></div>
       <div><label>Supplier</label><select id="pSup"><option value="">— none —</option>${window._sups.map(x=>`<option value="${x.Id}">${esc(x[sn])}</option>`).join('')}</select></div>
       <div><label>Cost Price</label><input id="pC" type="number" step="0.01"></div>
+      <div><label>Currency</label><select id="pCur">${curOptsHtml}</select></div>
       <div><label>Price Date</label><input id="pD" type="date"></div>
       <div><label>Category</label><input id="pCat"></div>
     </div>
@@ -357,11 +361,11 @@ async function renderProducts(){
 }
 function drawProdTable(){
   const q=(document.getElementById('pFilter')?.value||'').toLowerCase();
-  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sl=cn(T.Prod,'supplier');
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sl=cn(T.Prod,'supplier'),curc=cn(T.Prod,'currency');
   const rows=window._prods.filter(p=>!q||[p[sku],p[pn],p[cat]].some(v=>String(v||'').toLowerCase().includes(q)));
-  document.getElementById('prodTable').innerHTML=`<table><tr><th>SKU</th><th>Name</th><th>Supplier</th><th>Category</th><th>Cost</th><th>Price date</th></tr>
+  document.getElementById('prodTable').innerHTML=`<table><tr><th>SKU</th><th>Name</th><th>Supplier</th><th>Category</th><th>Cost</th><th>Currency</th><th>Price date</th></tr>
   ${rows.map(p=>`<tr class="clickrow" onclick="editProduct(${p.Id})"><td class="link"><b>${esc(p[sku]||'')}</b></td><td>${esc(p[pn]||'')}</td>
-  <td>${esc(linkedName(p,sl))}</td><td>${esc(p[cat]||'')}</td><td>${fmt(p[cost])}</td><td>${priceAge(p[pd])}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No matches.</td></tr>'}</table>`;
+  <td>${esc(linkedName(p,sl))}</td><td>${esc(p[cat]||'')}</td><td>${fmt(p[cost])}</td><td>${esc(p[curc]||'')}</td><td>${priceAge(p[pd])}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">No matches.</td></tr>'}</table>`;
 }
 async function saveProduct(){
   const m=document.getElementById('pMsg');
@@ -370,9 +374,10 @@ async function saveProduct(){
   try{
     const f={};
     f[pv(T.Prod).title]=sku||name;
-    const nc_=cn(T.Prod,'name'),cc=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification');
+    const nc_=cn(T.Prod,'name'),cc=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification'),curc=cn(T.Prod,'currency');
     if(nc_&&nc_!==pv(T.Prod).title)f[nc_]=name;
     if(cc)f[cc]=parseFloat(document.getElementById('pC').value)||0;
+    if(curc)f[curc]=document.getElementById('pCur').value;
     if(cat)f[cat]=document.getElementById('pCat').value;
     if(pd&&document.getElementById('pD').value)f[pd]=document.getElementById('pD').value;
     if(sp)f[sp]=document.getElementById('pSpec').value;
@@ -388,8 +393,12 @@ async function editProduct(id){
   const p=await getRec(T.Prod.id,id);
   const sups=(await listRec(T.Sup.id)).list||[];
   const sn=pv(T.Sup).title;
-  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification'),sl=cn(T.Prod,'supplier');
+  const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification'),sl=cn(T.Prod,'supplier'),curc=cn(T.Prod,'currency');
   const curSup=linkedId(p,sl);
+  const curCol=col(T.Prod,'currency');
+  const curOpts=(curCol?.colOptions?.options||[]).map(o=>o.title);
+  const curVal=curc?(p[curc]||''):'';
+  const curOptsHtml=(curOpts.length?curOpts:['EUR','USD','TRY','EGP']).map(c=>`<option ${c===curVal?'selected':''}>${esc(c)}</option>`).join('');
   const d=document.createElement('div');
   d.className='modal';d.id='pModal';
   d.innerHTML=`<div class="inner">
@@ -399,6 +408,7 @@ async function editProduct(id){
       <div><label>Name</label><input id="eN" value="${esc(p[pn]||'')}"></div>
       <div><label>Supplier</label><select id="eSup"><option value="">— none —</option>${sups.map(x=>`<option value="${x.Id}" ${x.Id===curSup?'selected':''}>${esc(x[sn])}</option>`).join('')}</select></div>
       <div><label>Cost Price</label><input id="eC" type="number" step="0.01" value="${p[cost]??''}"></div>
+      <div><label>Currency</label><select id="eCur">${curOptsHtml}</select></div>
       <div><label>Price Date</label><input id="eD" type="date" value="${(p[pd]||'').slice(0,10)}"></div>
       <div><label>Category</label><input id="eCat" value="${esc(p[cat]||'')}"></div>
     </div>
@@ -417,10 +427,11 @@ async function saveProductEdit(id){
   const m=document.getElementById('eMsg');
   try{
     const f={};
-    const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification');
+    const sku=pv(T.Prod).title,pn=cn(T.Prod,'name'),cost=cn(T.Prod,'cost'),cat=cn(T.Prod,'category'),pd=cn(T.Prod,'price updated','priceupdated'),sp=cn(T.Prod,'specification'),curc=cn(T.Prod,'currency');
     f[sku]=document.getElementById('eS').value;
     if(pn&&pn!==sku)f[pn]=document.getElementById('eN').value;
     if(cost)f[cost]=parseFloat(document.getElementById('eC').value)||0;
+    if(curc)f[curc]=document.getElementById('eCur').value;
     if(cat)f[cat]=document.getElementById('eCat').value;
     if(pd)f[pd]=document.getElementById('eD').value||null;
     if(sp)f[sp]=document.getElementById('eSpec').value;
